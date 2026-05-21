@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Heather Blatz — Strategic Intelligence Vision</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #07101c;
+    --deep:   #0b1828;
+    --panel:  #0f2035;
+    --sapphire: #1e5fa8;
+    --sapphire2:#4a8fd4;
+    --gold:   #c9a84c;
+    --gold2:  #e8c97a;
+    --cream:  #f0ebe0;
+    --muted:  #7a8fa8;
+    --soft:   #b8c8d8;
+    --white:  #ffffff;
+    --green:  #27ae60;
+    --teal:   #2dd4bf;
+    --purple: #9b59b6;
+    --line:   rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--ink); color:var(--soft); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.7; }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 0% 0%, rgba(30,95,168,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(201,168,76,0.05) 0%, transparent 55%);
+    pointer-events:none; z-index:0;
+  }
+  .wrap { max-width:980px; margin:0 auto; padding:80px 48px; position:relative; z-index:1; }
+
+  /* ── LABEL ── */
+  .doc-label { display:inline-flex; align-items:center; gap:10px; background:rgba(30,95,168,0.08); border:1px solid rgba(74,143,212,0.25); border-radius:4px; padding:7px 16px; margin-bottom:72px; opacity:0; animation:rise 0.5s ease forwards 0.1s; }
+  .pip { width:6px; height:6px; border-radius:50%; background:var(--sapphire2); animation:breathe 3s ease infinite; }
+  @keyframes breathe { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .doc-label span { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--sapphire2); text-transform:uppercase; }
+
+  /* ── COVER ── */
+  .cover { margin-bottom:96px; padding-bottom:72px; border-bottom:1px solid var(--line); opacity:0; animation:rise 0.9s ease forwards 0.15s; }
+  .cover-eye { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.25em; color:var(--sapphire2); text-transform:uppercase; margin-bottom:20px; }
+  .cover-title { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,5.5vw,68px); font-weight:600; color:var(--white); line-height:1.05; margin-bottom:24px; }
+  .cover-title em { color:var(--gold2); font-style:italic; }
+  .cover-body { font-size:15px; color:var(--muted); max-width:580px; line-height:1.85; margin-bottom:44px; }
+  .cover-chips { display:flex; gap:12px; flex-wrap:wrap; }
+  .chip { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:6px 14px; border-radius:4px; border:1px solid rgba(74,143,212,0.2); color:var(--sapphire2); background:rgba(30,95,168,0.05); }
+  .chip.gold { border-color:rgba(201,168,76,0.2); color:var(--gold); background:rgba(201,168,76,0.05); }
+
+  /* ── DIVIDER ── */
+  .divider { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+  .d-num  { font-family:'DM Mono',monospace; font-size:9px; color:rgba(74,143,212,0.5); letter-spacing:0.15em; }
+  .d-line { flex:1; height:1px; background:var(--line); }
+  .d-tag  { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--sapphire2); text-transform:uppercase; white-space:nowrap; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom:88px; opacity:0; animation:rise 0.7s ease forwards; }
+  h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.2vw,40px); font-weight:600; color:var(--white); line-height:1.15; margin-bottom:14px; }
+  h2 em { color:var(--gold2); font-style:italic; }
+  .section-lead { font-size:14px; color:var(--muted); max-width:640px; line-height:1.85; margin-bottom:40px; }
+
+  /* ── PANELS ── */
+  .panel { background:var(--panel); border-radius:10px; padding:32px; border:1px solid var(--line); margin-bottom:20px; }
+  .pt { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--sapphire2); margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .pt.gold  { color:var(--gold); }
+  .pt.green { color:var(--green); }
+  .pt.teal  { color:var(--teal); }
+
+  /* ── GRIDS ── */
+  .two-col   { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px; }
+
+  /* ── FACTS ROW ── */
+  .facts-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-bottom:48px; }
+  .fact { background:var(--panel); padding:24px 20px; position:relative; overflow:hidden; }
+  .fact:first-child { border-radius:8px 0 0 8px; }
+  .fact:last-child  { border-radius:0 8px 8px 0; }
+  .fact::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; }
+  .fact.blue::after  { background:linear-gradient(90deg,var(--sapphire),var(--sapphire2)); }
+  .fact.gold::after  { background:linear-gradient(90deg,var(--gold),var(--gold2)); }
+  .fact.green::after { background:linear-gradient(90deg,var(--green),#2ecc71); }
+  .fact.teal::after  { background:linear-gradient(90deg,var(--teal),#5eead4); }
+  .fact-val { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; line-height:1; margin-bottom:6px; }
+  .fact.blue  .fact-val { color:var(--sapphire2); }
+  .fact.gold  .fact-val { color:var(--gold2); }
+  .fact.green .fact-val { color:#2ecc71; }
+  .fact.teal  .fact-val { color:#5eead4; }
+  .fact-lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+  .fact-src { font-family:'DM Mono',monospace; font-size:8px; margin-top:8px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(74,143,212,0.35); }
+
+  /* ── DATA ROWS ── */
+  .dr { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .dr:last-child { border-bottom:none; }
+  .dr-name { font-size:13px; color:var(--cream); margin-bottom:3px; }
+  .dr-sub  { font-size:11px; color:var(--muted); line-height:1.5; }
+  .dr-right { flex-shrink:0; text-align:right; }
+  .badge { display:inline-block; font-family:'DM Mono',monospace; font-size:8px; padding:2px 7px; border-radius:3px; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+  .b-confirmed { background:rgba(74,143,212,0.1); color:var(--sapphire2); border:1px solid rgba(74,143,212,0.2); }
+  .b-estimated { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .b-concept   { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .b-gold      { background:rgba(201,168,76,0.1); color:var(--gold2); border:1px solid rgba(201,168,76,0.25); }
+
+  /* ── MACHINE CARDS ── */
+  .machine { border-radius:10px; padding:28px; border:1px solid var(--line); background:rgba(255,255,255,0.02); position:relative; overflow:hidden; margin-bottom:16px; }
+  .machine::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
+  .machine.blue::before   { background:linear-gradient(180deg,var(--sapphire),var(--sapphire2)); }
+  .machine.gold::before   { background:linear-gradient(180deg,var(--gold),var(--gold2)); }
+  .machine.green::before  { background:linear-gradient(180deg,var(--green),#2ecc71); }
+  .machine.teal::before   { background:linear-gradient(180deg,var(--teal),#5eead4); }
+  .machine.purple::before { background:linear-gradient(180deg,var(--purple),#c39bd3); }
+  .machine-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+  .machine-icon-name { display:flex; align-items:center; gap:12px; }
+  .machine-icon { font-size:20px; }
+  .machine-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--white); }
+  .machine-status { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; letter-spacing:0.1em; flex-shrink:0; }
+  .ms-concept { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .ms-gold    { background:rgba(201,168,76,0.1); color:var(--gold); border:1px solid rgba(201,168,76,0.25); }
+  .machine-desc { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+  .machine-steps { list-style:none; }
+  .machine-steps li { font-size:12px; color:var(--soft); padding:7px 0; border-bottom:1px solid var(--line); padding-left:16px; position:relative; }
+  .machine-steps li:last-child { border-bottom:none; }
+  .machine-steps li::before { content:'→'; position:absolute; left:0; color:var(--sapphire2); font-family:'DM Mono',monospace; font-size:10px; top:9px; }
+  .machine-steps li.gold::before   { color:var(--gold); }
+  .machine-steps li.green::before  { color:var(--green); }
+  .machine-steps li.teal::before   { color:var(--teal); }
+  .machine-steps li.purple::before { color:#c39bd3; }
+
+  /* ── CALLOUT ── */
+  .callout { border-radius:10px; padding:36px 40px; margin-bottom:24px; }
+  .callout.blue { background:linear-gradient(135deg,rgba(30,95,168,0.1),rgba(30,95,168,0.02)); border:1px solid rgba(74,143,212,0.22); }
+  .callout.gold { background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); }
+  .callout-eye { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:12px; }
+  .callout.blue .callout-eye { color:var(--sapphire2); }
+  .callout.gold .callout-eye { color:var(--gold); }
+  .callout h3 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--white); margin-bottom:12px; }
+  .callout p { font-size:13px; color:var(--muted); line-height:1.8; max-width:660px; }
+
+  /* ── PILLARS ── */
+  .pillar { border-radius:10px; padding:28px; text-align:center; border:1px solid var(--line); background:rgba(255,255,255,0.02); }
+  .pillar-icon { font-size:28px; margin-bottom:14px; display:block; }
+  .pillar-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:8px; }
+  .pillar-desc { font-size:12px; color:var(--muted); line-height:1.7; }
+  .pillar-who  { font-family:'DM Mono',monospace; font-size:9px; margin-top:14px; padding:5px 12px; border-radius:3px; display:inline-block; letter-spacing:0.1em; }
+  .pillar.blue   .pillar-name { color:var(--sapphire2); }
+  .pillar.gold   .pillar-name { color:var(--gold2); }
+  .pillar.teal   .pillar-name { color:#5eead4; }
+  .pillar.blue   .pillar-who  { background:rgba(74,143,212,0.08); color:var(--sapphire2); border:1px solid rgba(74,143,212,0.2); }
+  .pillar.gold   .pillar-who  { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .pillar.teal   .pillar-who  { background:rgba(45,212,191,0.08); color:var(--teal); border:1px solid rgba(45,212,191,0.2); }
+
+  /* ── RYAN CREDIBILITY CARD ── */
+  .ryan-card { background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); border-radius:10px; padding:32px 36px; margin-bottom:20px; }
+  .ryan-card-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .ryan-card p { font-size:13px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .ryan-card p:last-child { margin-bottom:0; }
+  .ryan-card strong { color:var(--cream); font-weight:500; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:32px 36px; margin-bottom:48px; }
+  .disclaimer-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .disclaimer p { font-size:12px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .disclaimer p:last-child { margin-bottom:0; }
+  .disclaimer strong { color:var(--cream); font-weight:500; }
+
+  /* ── FOOTER ── */
+  .footer { text-align:center; padding-top:32px; border-top:1px solid var(--line); opacity:0; animation:rise 0.6s ease forwards 1.2s; }
+  .footer p { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .section:nth-child(1){animation-delay:0.25s} .section:nth-child(2){animation-delay:0.35s}
+  .section:nth-child(3){animation-delay:0.45s} .section:nth-child(4){animation-delay:0.50s}
+  .section:nth-child(5){animation-delay:0.55s} .section:nth-child(6){animation-delay:0.60s}
+  .section:nth-child(7){animation-delay:0.65s}
+
+  @media(max-width:720px){
+    .wrap{padding:48px 24px;}
+    .facts-row,.two-col,.three-col{grid-template-columns:1fr 1fr;}
+    .fact:first-child{border-radius:8px 8px 0 0;}
+    .fact:last-child{border-radius:0 0 8px 8px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LABEL -->
+  <div class="doc-label">
+    <div class="pip"></div>
+    <span>Strategic Intelligence Vision · Luxury Market · Conceptual</span>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eye">Scenic Sotheby's International Realty · Cinco Bayou · Emerald Coast, Florida</div>
+    <h1 class="cover-title">
+      A Strategic Vision<br>
+      <em>for Heather Blatz</em>
+    </h1>
+    <p class="cover-body">
+      Heather operates at the intersection of luxury real estate, global reach, and personal transformation. With Sotheby's international network behind her and a client-centered philosophy built on clarity and results, she's positioned for something bigger. This document explores the data intelligence, operational systems, and lead strategies that could amplify everything she's already built.
+    </p>
+    <div class="cover-chips">
+      <span class="chip">Luxury Intelligence</span>
+      <span class="chip">Global Lead Targeting</span>
+      <span class="chip">Transaction Systems</span>
+      <span class="chip">Absentee Owner Data</span>
+      <span class="chip gold">Destin Market Dominance</span>
+      <span class="chip gold">High-Net-Worth Targeting</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: WHO HEATHER IS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">01</span><div class="d-line"></div><span class="d-tag">Who Heather Blatz Is</span></div>
+    <h2>Global Advisor. Luxury Specialist. <em>Emerald Coast Authority.</em></h2>
+    <p class="section-lead">Heather isn't a typical local agent. She's a Global Real Estate Advisor backed by Sotheby's worldwide network — with a background in entrepreneurship, leadership, and coaching that gives her a fundamentally different approach to the client relationship. She guides life transitions, not just transactions.</p>
+
+    <div class="facts-row">
+      <div class="fact blue">
+        <div class="fact-val">5.0★</div>
+        <div class="fact-lbl">Google rating · 52 reviews · Active Maps presence</div>
+        <div class="fact-src">Confirmed · Google</div>
+      </div>
+      <div class="fact gold">
+        <div class="fact-val">6.9K+</div>
+        <div class="fact-lbl">Facebook followers · Active content publisher</div>
+        <div class="fact-src">Confirmed · Facebook</div>
+      </div>
+      <div class="fact blue">
+        <div class="fact-val">Global</div>
+        <div class="fact-lbl">Sotheby's worldwide network · International buyer reach</div>
+        <div class="fact-src">Confirmed · Sotheby's</div>
+      </div>
+      <div class="fact teal">
+        <div class="fact-val">24–72h</div>
+        <div class="fact-lbl">Reported sale time · Homes sold in record time per reviews</div>
+        <div class="fact-src">Confirmed · Public Reviews</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="pt">Publicly Observable Profile</div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Brokerage & Market</div>
+          <div class="dr-sub">Scenic Sotheby's International Realty · Cinco Bayou · Destin & Fort Walton Beach · Emerald Coast</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Specialty</div>
+          <div class="dr-sub">Luxury · Lifestyle · Strategic investments · Second homes · Income-producing properties · Global buyers</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Background — Coaching & Leadership</div>
+          <div class="dr-sub">"Visionary leader, mentor, and dynamic speaker" — heatherblatz.com · Empowerment platform separate from real estate</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Marketing Approach</div>
+          <div class="dr-sub">Professional photography · Engaging videos · Well-organized open houses · Comprehensive strategy per client reviews</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Sotheby's Network Advantage</div>
+          <div class="dr-sub">Scenic SIR — #1 brokerage in Northwest Florida · 19K Instagram followers · International buyer exposure</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Unique Dual Brand</div>
+          <div class="dr-sub">heatherblatz.com as a coaching/leadership platform alongside real estate — rare personal brand depth</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: THE UNIQUE ANGLE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">02</span><div class="d-line"></div><span class="d-tag">Heather's Competitive Position</span></div>
+    <h2>Where <em>Data Intelligence Meets Luxury</em></h2>
+    <p class="section-lead">Heather's market — Destin, Fort Walton Beach, and the Emerald Coast — is one of the most data-rich real estate environments in Florida. High-value absentee owners, vacation home investors, and out-of-state luxury buyers are exactly the leads that a data intelligence system is built to find.</p>
+
+    <div class="callout gold">
+      <div class="callout-eye">The Destin Opportunity</div>
+      <h3>Destin has 9,317 absentee owners. We've already found them.</h3>
+      <p>Our existing Okaloosa County lead intelligence system has already identified 9,317 absentee-owned properties in Destin alone — the single highest concentration in the county. The average property just value in our dataset is $455,000. These are exactly Heather's clients — vacation home owners, out-of-state investors, and lifestyle property holders who bought years ago and may not know what their Emerald Coast property is worth today. The HOT tier for Destin alone has over 1,000 scored, ranked, ready-to-contact leads.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="pt gold">Heather's Natural Lead Profile — Already in Our Data</div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Out-of-State Destin Owners</div>
+            <div class="dr-sub">GA, TX, TN, AL, LA owners with Destin properties — prime Sotheby's listing candidates</div>
+          </div>
+          <span class="badge b-gold">Already Identified</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">High-Value Absentee Owners ($400K–$1M+)</div>
+            <div class="dr-sub">Premium properties with owners not in residence — Heather's sweet spot</div>
+          </div>
+          <span class="badge b-gold">Already Scored</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Long-Term Vacation Home Owners</div>
+            <div class="dr-sub">Owned 10+ years · Significant equity · May not know current market value</div>
+          </div>
+          <span class="badge b-gold">Already Flagged</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Trust & Estate Owned Properties</div>
+            <div class="dr-sub">3,033 trust-owned properties in county · Estate/heir situations need a concierge-level agent</div>
+          </div>
+          <span class="badge b-gold">Already Tagged</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">LLC & Corporate Owned Properties</div>
+            <div class="dr-sub">5,309 investor-owned properties · Heather's investment property expertise aligns perfectly</div>
+          </div>
+          <span class="badge b-gold">Already Tagged</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="pt">What Heather Already Does Well</div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Speed of Sale</div>
+            <div class="dr-sub">Multiple reviews cite 24–72 hour sale times — a remarkable metric in any market</div>
+          </div>
+          <span class="badge b-confirmed">Pattern</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Global Buyer Access</div>
+            <div class="dr-sub">Sotheby's network exposes listings to qualified international buyers most agents can't reach</div>
+          </div>
+          <span class="badge b-confirmed">Confirmed</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Professional Marketing Production</div>
+            <div class="dr-sub">Photography, video, open houses — clients consistently cite her marketing quality</div>
+          </div>
+          <span class="badge b-confirmed">Pattern</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Life Transition Guidance</div>
+            <div class="dr-sub">Coaching background means she handles emotionally complex transactions better than most agents</div>
+          </div>
+          <span class="badge b-confirmed">Confirmed</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Data-Driven Approach</div>
+            <div class="dr-sub">"Blends high-touch service with data-driven strategy" — this is her stated philosophy</div>
+          </div>
+          <span class="badge b-confirmed">Confirmed</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: LEAD INTELLIGENCE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">03</span><div class="d-line"></div><span class="d-tag">Lead Intelligence System</span></div>
+    <h2>Turning Public Data Into <em>Luxury Listing Appointments</em></h2>
+    <p class="section-lead">Heather already believes in data-driven strategy — her own bio says so. What she may not have is a system that delivers a scored, ranked list of her most likely sellers every single month, automatically, from public records. That's exactly what we build.</p>
+
+    <div class="machine blue">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏖️</span>
+          <span class="machine-name">Destin Luxury Absentee Owner Intelligence</span>
+        </div>
+        <span class="machine-status ms-gold">Data Already Built</span>
+      </div>
+      <p class="machine-desc">We've already built the Okaloosa County absentee owner database — 28,112 records, scored and ranked. Heather can access the Destin HOT tier immediately. Each month, a refreshed ranked list of the highest-probability luxury sellers in her exact market — delivered automatically, ready to contact.</p>
+      <ul class="machine-steps">
+        <li>9,317 Destin absentee owner records — already identified and scored</li>
+        <li>Filter for $400K+ properties — Heather's natural price range — narrows to the highest-value leads</li>
+        <li>Out-of-state owners flagged — GA, TX, TN, AL — most motivated to sell from a distance</li>
+        <li>Trust, LLC, and estate situations tagged — complex transactions where concierge service wins</li>
+        <li>Monthly refresh — new owners in, sold properties out, scores recalculated automatically</li>
+      </ul>
+    </div>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">✉️</span>
+          <span class="machine-name">Luxury Outreach Letter System</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Heather's brand is premium. Her outreach should match. A personalized letter system — tailored to each absentee owner's specific property — in Heather's voice and Sotheby's aesthetic could generate listing appointments from sellers who've never heard of her but are immediately impressed.</p>
+      <ul class="machine-steps">
+        <li class="gold">Draft personalized outreach letter for each HOT lead — property-specific, data-backed</li>
+        <li class="gold">"Your Destin property may be significantly more valuable than you realize. Let me show you the numbers."</li>
+        <li class="gold">Reference Sotheby's global reach — "Your property, in front of qualified buyers worldwide"</li>
+        <li class="gold">Output print-ready mail merge — branded to Heather's Sotheby's identity</li>
+      </ul>
+    </div>
+
+    <div class="machine teal">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🌍</span>
+          <span class="machine-name">International Buyer Intelligence</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Heather's biggest differentiator is Sotheby's global buyer network. A system that helps her identify and target international buyers specifically interested in Florida Emerald Coast properties could unlock a lead source most local agents can't access at all.</p>
+      <ul class="machine-steps">
+        <li class="teal">Monitor Sotheby's global inquiry data for Emerald Coast property searches — with proper access</li>
+        <li class="teal">Track which international markets are most active in Florida luxury real estate</li>
+        <li class="teal">Prepare multilingual property summaries for listings — expanding buyer pool further</li>
+        <li class="teal">Alert Heather when a new listing matches the profile of active international buyer inquiries</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: LISTING MACHINE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">04</span><div class="d-line"></div><span class="d-tag">The Luxury Listing Machine</span></div>
+    <h2>Every Listing. <em>Presented at Its Absolute Best.</em></h2>
+    <p class="section-lead">Heather already uses professional photography, video, and comprehensive marketing. The opportunity is to systematize that excellence — so every listing gets the same premium treatment automatically, and no detail is ever missed.</p>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏡</span>
+          <span class="machine-name">Luxury Pre-Listing Intelligence Package</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">For luxury listings, the preparation before the appointment is everything. A system that automatically assembles a full property intelligence brief — comp analysis, ownership history, comparable luxury sales, neighborhood premium data — gives Heather the authority to walk in and command the room.</p>
+      <ul class="machine-steps">
+        <li>Pull full Okaloosa County property record — ownership history, assessed value, tax history</li>
+        <li>Luxury comp analysis — comparable sales above $400K within 1 mile · Last 120 days</li>
+        <li>Waterfront and amenity premium analysis — pool, dock, beach access value indicators</li>
+        <li>Out-of-state comparable sales — "Here's what similar properties sold for to buyers from your state"</li>
+        <li>One-page executive brief — in Sotheby's aesthetic · Delivered before the appointment</li>
+      </ul>
+    </div>
+
+    <div class="two-col">
+      <div class="machine blue" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📹</span>
+            <span class="machine-name">Listing Content Automation</span>
+          </div>
+          <span class="machine-status ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">Heather already uses video and photography. A content system could take every new listing and auto-draft the full marketing package — MLS description, social captions, email announcement, and Sotheby's property description — for her review.</p>
+        <ul class="machine-steps">
+          <li>MLS description drafted from property data</li>
+          <li>Instagram, Facebook captions — in her voice</li>
+          <li>Email announcement to past client sphere</li>
+          <li>Sotheby's global listing description · Premium language</li>
+        </ul>
+      </div>
+
+      <div class="machine green" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📄</span>
+            <span class="machine-name">Transaction & Pin-to-Close System</span>
+          </div>
+          <span class="machine-status ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">Luxury transactions have more moving parts — title, financing, inspections, negotiations. A timeline tracker that maps every deadline and a pin-to-close document generator that creates a branded closing summary automatically.</p>
+        <ul class="machine-steps">
+          <li class="green">Extract all key dates from executed contract</li>
+          <li class="green">Proactive alerts 5 days before each deadline</li>
+          <li class="green">Branded Sotheby's pin-to-close PDF at closing</li>
+          <li class="green">Post-close review request — automated</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5: THE TEAM + RYAN CREDIBILITY -->
+  <div class="section">
+    <div class="divider"><span class="d-num">05</span><div class="d-line"></div><span class="d-tag">Who We Are</span></div>
+    <h2>A Team That <em>Understands Real Estate</em> — Not Just Technology</h2>
+    <p class="section-lead">This isn't a tech company that stumbled into real estate. This is a team led by someone who has sat in the same chair Heather sits in — and understands what it actually takes to win in this business.</p>
+
+    <div class="ryan-card">
+      <div class="ryan-card-title">About Ryan Clark — Operations Lead</div>
+      <p><strong>Ryan Clark is a former licensed REALTOR® and MIBOR member</strong> — the Metropolitan Indianapolis Board of REALTORS, the same MLS system Shannon Gilbert operates in. At his peak from 2012 to 2016, Ryan was ranked among the <strong>top 50 real estate agents in the state of Indiana</strong>.</p>
+      <p>That experience means Ryan doesn't just understand data and systems — he understands what a listing appointment feels like, what a difficult transaction looks like, and what agents actually need versus what tech companies think they need. When we build something for a realtor, it's built by someone who has done the job.</p>
+      <p><strong>Combined with Junior's technical precision and Claude's AI intelligence</strong>, this team brings something genuinely rare: real estate expertise, technical capability, and AI power — working together, for you.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="pillar blue">
+        <span class="pillar-icon">🏆</span>
+        <div class="pillar-name">Real Estate Experience</div>
+        <p class="pillar-desc">Former REALTOR® · MIBOR member 2012–2016 · Top 50 Indiana agents · Understands the business from the inside.</p>
+        <span class="pillar-who">Ryan Clark — Operations Lead</span>
+      </div>
+      <div class="pillar gold">
+        <span class="pillar-icon">⚡</span>
+        <div class="pillar-name">Technical Build</div>
+        <p class="pillar-desc">Writes the code. Builds the data pipelines, scrapers, automation scripts, and integrations. Turns strategy into working systems. Fast, reliable, precise.</p>
+        <span class="pillar-who">Junior — Technical Lead</span>
+      </div>
+      <div class="pillar teal">
+        <span class="pillar-icon">🤖</span>
+        <div class="pillar-name">AI Intelligence</div>
+        <p class="pillar-desc">Analyzes data, scores leads, drafts listing descriptions and client communications, generates market reports — all in Heather's voice and Sotheby's standard.</p>
+        <span class="pillar-who">Claude — AI Engine</span>
+      </div>
+    </div>
+
+    <div class="callout blue">
+      <div class="callout-eye">The Core Promise</div>
+      <h3>Heather focuses on the client. We handle the intelligence.</h3>
+      <p>Heather's philosophy is already data-driven and high-touch. What we add is the infrastructure that makes that philosophy scalable — so she can spend more time doing what she does better than almost anyone: guiding clients through major life transitions with clarity, confidence, and results.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="disclaimer-title">Important Notice</div>
+    <p><strong>This is a conceptual strategic vision document.</strong> The absentee owner database is real and built from Florida's 2025 public tax roll. All other systems described are concepts requiring planning and implementation.</p>
+    <p><strong>Production figures, transaction timelines, and market estimates</strong> are sourced from public profiles and review platforms and should not be treated as verified facts. All data is clearly labeled by source and confidence level.</p>
+    <p><strong>The intent</strong> is to demonstrate a genuine understanding of Heather's market position and the intelligence opportunities available to a luxury Sotheby's advisor on the Emerald Coast — and to open a real conversation about what we could build together.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Strategic Intelligence Vision · Heather Blatz · Scenic Sotheby's International Realty · Cinco Bayou · Emerald Coast, Florida</p>
+    <p>Prepared by Ryan Clark · AI Engine: Claude · Technical: Junior · Conceptual · Not Yet Built</p>
+  </div>
+
+</div>
+</body>
+</html>

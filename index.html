@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ryan Clark · AI Real Estate Intelligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:   #07101c;
+    --deep:  #0b1828;
+    --panel: #0f2035;
+    --gold:  #c9a84c;
+    --gold2: #e8c97a;
+    --cream: #f0ebe0;
+    --muted: #7a8fa8;
+    --soft:  #b8c8d8;
+    --white: #ffffff;
+    --line:  rgba(255,255,255,0.07);
+
+    /* agent colors */
+    --teal:   #2dd4bf;
+    --orange: #e07b39;
+    --rose:   #d4728a;
+    --sapphire:#4a8fd4;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body {
+    background:var(--ink);
+    color:var(--soft);
+    font-family:'DM Sans',sans-serif;
+    font-weight:300;
+    min-height:100vh;
+  }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 70% 50% at 10% 10%, rgba(201,168,76,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 90% 90%, rgba(45,212,191,0.04) 0%, transparent 55%);
+    pointer-events:none; z-index:0;
+  }
+
+  .wrap { max-width:960px; margin:0 auto; padding:80px 40px; position:relative; z-index:1; }
+
+  /* ── HEADER ── */
+  .header { text-align:center; margin-bottom:80px; opacity:0; animation:rise 0.8s ease forwards 0.1s; }
+  .eyebrow { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.25em; color:var(--gold); text-transform:uppercase; margin-bottom:20px; display:block; }
+  .logo { font-family:'Cormorant Garamond',serif; font-size:clamp(40px,5vw,64px); font-weight:600; color:var(--white); line-height:1.05; margin-bottom:16px; }
+  .logo em { color:var(--gold2); font-style:italic; }
+  .tagline { font-size:15px; color:var(--muted); max-width:520px; margin:0 auto; line-height:1.8; margin-bottom:36px; }
+
+  /* ── RYAN BIO STRIP ── */
+  .bio-strip {
+    background:rgba(201,168,76,0.07);
+    border:1px solid rgba(201,168,76,0.2);
+    border-radius:10px;
+    padding:24px 32px;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:20px;
+    align-items:center;
+    max-width:680px;
+    margin:0 auto 48px;
+    text-align:left;
+  }
+  .bio-icon { font-size:32px; }
+  .bio-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--white); margin-bottom:4px; }
+  .bio-text { font-size:12px; color:var(--muted); line-height:1.6; }
+  .bio-text strong { color:var(--gold2); font-weight:500; }
+
+  /* ── SECTION DIVIDER ── */
+  .section-label {
+    display:flex; align-items:center; gap:16px;
+    margin-bottom:32px;
+  }
+  .sl-line { flex:1; height:1px; background:var(--line); }
+  .sl-text { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; white-space:nowrap; }
+
+  /* ── AGENT CARDS ── */
+  .agents-grid { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:64px; }
+
+  .agent-card {
+    border-radius:12px;
+    padding:32px;
+    border:1px solid var(--line);
+    background:var(--panel);
+    position:relative;
+    overflow:hidden;
+    opacity:0;
+    animation:rise 0.7s ease forwards;
+    transition:transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .agent-card:hover {
+    transform:translateY(-3px);
+    box-shadow:0 12px 40px rgba(0,0,0,0.3);
+  }
+  .agent-card::before {
+    content:''; position:absolute;
+    top:0; left:0; right:0; height:3px;
+  }
+  .agent-card.teal::before    { background:linear-gradient(90deg,var(--teal),#5eead4); }
+  .agent-card.orange::before  { background:linear-gradient(90deg,var(--orange),#f0a060); }
+  .agent-card.rose::before    { background:linear-gradient(90deg,var(--rose),#e89aac); }
+  .agent-card.sapphire::before{ background:linear-gradient(90deg,var(--sapphire),#7ab8e8); }
+
+  .agent-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:16px; }
+  .agent-name { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:600; color:var(--white); line-height:1.1; margin-bottom:4px; }
+  .agent-firm { font-size:11px; color:var(--muted); }
+  .agent-market { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; flex-shrink:0; margin-left:12px; margin-top:4px; }
+  .teal    .agent-market { background:rgba(45,212,191,0.1); color:var(--teal); border:1px solid rgba(45,212,191,0.2); }
+  .orange  .agent-market { background:rgba(224,123,57,0.1); color:var(--orange); border:1px solid rgba(224,123,57,0.2); }
+  .rose    .agent-market { background:rgba(212,114,138,0.1); color:var(--rose); border:1px solid rgba(212,114,138,0.2); }
+  .sapphire .agent-market { background:rgba(74,143,212,0.1); color:var(--sapphire); border:1px solid rgba(74,143,212,0.2); }
+
+  .agent-desc { font-size:12.5px; color:var(--muted); line-height:1.65; margin-bottom:20px; }
+
+  .agent-tags { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:24px; }
+  .tag { font-family:'DM Mono',monospace; font-size:8px; padding:3px 9px; border-radius:3px; border:1px solid var(--line); color:var(--muted); background:rgba(255,255,255,0.02); letter-spacing:0.08em; text-transform:uppercase; }
+
+  .view-btn {
+    display:block;
+    text-align:center;
+    padding:12px 20px;
+    border-radius:6px;
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    text-decoration:none;
+    transition:all 0.2s ease;
+    font-weight:500;
+  }
+  .teal    .view-btn { background:rgba(45,212,191,0.1); color:var(--teal); border:1px solid rgba(45,212,191,0.25); }
+  .orange  .view-btn { background:rgba(224,123,57,0.1); color:var(--orange); border:1px solid rgba(224,123,57,0.25); }
+  .rose    .view-btn { background:rgba(212,114,138,0.1); color:var(--rose); border:1px solid rgba(212,114,138,0.25); }
+  .sapphire .view-btn { background:rgba(74,143,212,0.1); color:var(--sapphire); border:1px solid rgba(74,143,212,0.25); }
+
+  .teal    .view-btn:hover { background:rgba(45,212,191,0.2); }
+  .orange  .view-btn:hover { background:rgba(224,123,57,0.2); }
+  .rose    .view-btn:hover { background:rgba(212,114,138,0.2); }
+  .sapphire .view-btn:hover { background:rgba(74,143,212,0.2); }
+
+  /* ── DATA SECTION ── */
+  .data-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; margin-bottom:64px; }
+  .data-card {
+    background:var(--panel); border-radius:10px; padding:24px;
+    border:1px solid var(--line); text-align:center;
+    opacity:0; animation:rise 0.7s ease forwards;
+  }
+  .data-card::after { content:''; display:block; height:2px; background:linear-gradient(90deg,var(--gold),var(--gold2)); border-radius:2px; margin-top:16px; }
+  .data-num { font-family:'Cormorant Garamond',serif; font-size:32px; font-weight:700; color:var(--gold2); display:block; margin-bottom:6px; }
+  .data-lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+
+  /* ── HOW IT WORKS ── */
+  .how-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-bottom:64px; }
+  .how-step { padding:24px; border-radius:10px; border:1px solid var(--line); background:rgba(255,255,255,0.02); opacity:0; animation:rise 0.7s ease forwards; }
+  .how-num  { font-family:'DM Mono',monospace; font-size:10px; color:var(--gold); letter-spacing:0.15em; margin-bottom:12px; display:block; }
+  .how-title { font-family:'Cormorant Garamond',serif; font-size:17px; font-weight:600; color:var(--white); margin-bottom:8px; }
+  .how-desc  { font-size:12px; color:var(--muted); line-height:1.65; }
+
+  /* ── FOOTER ── */
+  .footer { text-align:center; padding-top:40px; border-top:1px solid var(--line); opacity:0; animation:rise 0.6s ease forwards 1s; }
+  .footer p { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.08em; margin-bottom:6px; }
+  .footer .contact { font-size:13px; color:var(--gold2); margin-bottom:4px; }
+
+  /* ── ANIMATIONS ── */
+  @keyframes rise { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+  .agent-card:nth-child(1){animation-delay:0.3s}
+  .agent-card:nth-child(2){animation-delay:0.4s}
+  .agent-card:nth-child(3){animation-delay:0.5s}
+  .agent-card:nth-child(4){animation-delay:0.6s}
+  .data-card:nth-child(1){animation-delay:0.5s}
+  .data-card:nth-child(2){animation-delay:0.6s}
+  .data-card:nth-child(3){animation-delay:0.7s}
+  .how-step:nth-child(1){animation-delay:0.5s}
+  .how-step:nth-child(2){animation-delay:0.6s}
+  .how-step:nth-child(3){animation-delay:0.7s}
+
+  @media(max-width:680px){
+    .agents-grid,.data-grid,.how-grid{ grid-template-columns:1fr; }
+    .bio-strip{ grid-template-columns:1fr; text-align:center; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- HEADER -->
+  <div class="header">
+    <span class="eyebrow">AI-Powered Real Estate Intelligence</span>
+    <h1 class="logo">Ryan Clark<br><em>Real Estate Intelligence</em></h1>
+    <p class="tagline">Data-driven prospecting, AI automation, and operations systems built specifically for high-performing real estate agents — by someone who has been one.</p>
+
+    <!-- RYAN BIO -->
+    <div class="bio-strip">
+      <div class="bio-icon">🏆</div>
+      <div>
+        <div class="bio-name">Ryan Clark — Operations Lead</div>
+        <p class="bio-text">Former licensed REALTOR® and <strong>MIBOR member 2012–2016</strong>. At peak production, <strong>ranked top 50 agents in the state of Indiana</strong>. Now leading an AI-powered operations team that builds the systems most agents wish they had. Real estate experience. Real technical capability. Real results.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- AGENT BRIEFS -->
+  <div class="section-label">
+    <div class="sl-line"></div>
+    <span class="sl-text">Strategic Intelligence Briefs</span>
+    <div class="sl-line"></div>
+  </div>
+
+  <div class="agents-grid">
+
+    <!-- SHANNON -->
+    <div class="agent-card teal">
+      <div class="agent-header">
+        <div>
+          <div class="agent-name">Shannon Gilbert</div>
+          <div class="agent-firm">Keller Williams Portfolio · The Gilbert Group</div>
+        </div>
+        <span class="agent-market">Fishers, IN</span>
+      </div>
+      <p class="agent-desc">Top 25 Central Indiana team. 18 years. $25M+ annual production. 477 Zillow reviews at 5.0★. A complete operations vision covering lead intelligence, listing systems, transaction automation, and CRM optimization for Hamilton County's premier team.</p>
+      <div class="agent-tags">
+        <span class="tag">Lead Intelligence</span>
+        <span class="tag">Listing Machine</span>
+        <span class="tag">Lofty CRM</span>
+        <span class="tag">Transaction Systems</span>
+      </div>
+      <a href="shannon_gilbert_operations_vision.html" class="view-btn">View Full Brief →</a>
+    </div>
+
+    <!-- JIM -->
+    <div class="agent-card orange">
+      <div class="agent-header">
+        <div>
+          <div class="agent-name">Jim Whatley</div>
+          <div class="agent-firm">Uber Realty LLC · Owner & Broker</div>
+        </div>
+        <span class="agent-market">Fort Walton Beach, FL</span>
+      </div>
+      <p class="agent-desc">19 years. 1–2% commission model. A+ BBB. 4.9★ Google. The disruptive agent who proved the math works. A vision for amplifying his unique competitive advantage with data intelligence, targeted outreach, and lean operations systems built for a one-man operation.</p>
+      <div class="agent-tags">
+        <span class="tag">28,112 Leads Built</span>
+        <span class="tag">Commission Math</span>
+        <span class="tag">Estate Sales</span>
+        <span class="tag">Distressed Monitor</span>
+      </div>
+      <a href="jim_whatley_operations_vision.html" class="view-btn">View Full Brief →</a>
+    </div>
+
+    <!-- SHELBY -->
+    <div class="agent-card rose">
+      <div class="agent-header">
+        <div>
+          <div class="agent-name">Shelby Baker</div>
+          <div class="agent-firm">Coldwell Banker Realty · Navarre</div>
+        </div>
+        <span class="agent-market">Navarre, FL</span>
+      </div>
+      <p class="agent-desc">10 years. New construction specialist. Luxury market expert. Award winner at RateMyAgent. A vision focused on closing critical marketing gaps — including a missing Google Business Profile — and building her into the undisputed authority in Santa Rosa County.</p>
+      <div class="agent-tags">
+        <span class="tag">⚠ Google Maps Gap</span>
+        <span class="tag">New Construction</span>
+        <span class="tag">Military Relocation</span>
+        <span class="tag">Content Strategy</span>
+      </div>
+      <a href="shelby_baker_operations_vision.html" class="view-btn">View Full Brief →</a>
+    </div>
+
+    <!-- HEATHER -->
+    <div class="agent-card sapphire">
+      <div class="agent-header">
+        <div>
+          <div class="agent-name">Heather Blatz</div>
+          <div class="agent-firm">Scenic Sotheby's International Realty</div>
+        </div>
+        <span class="agent-market">Destin, FL</span>
+      </div>
+      <p class="agent-desc">Global Real Estate Advisor. Luxury specialist. 5.0★ · 52 Google reviews. Backed by Sotheby's worldwide network. A luxury intelligence vision connecting 9,317 Destin absentee owners to Heather's concierge-level approach and global buyer reach.</p>
+      <div class="agent-tags">
+        <span class="tag">9,317 Destin Leads</span>
+        <span class="tag">Luxury Market</span>
+        <span class="tag">Global Buyers</span>
+        <span class="tag">Sotheby's Network</span>
+      </div>
+      <a href="heather_blatz_operations_vision.html" class="view-btn">View Full Brief →</a>
+    </div>
+
+  </div>
+
+  <!-- DATA STATS -->
+  <div class="section-label">
+    <div class="sl-line"></div>
+    <span class="sl-text">The Data Behind the Vision</span>
+    <div class="sl-line"></div>
+  </div>
+
+  <div class="data-grid">
+    <div class="data-card">
+      <span class="data-num">28,112</span>
+      <div class="data-lbl">Okaloosa County absentee owner records — scored, ranked, and ready to contact. Built from Florida's 2025 public tax roll.</div>
+    </div>
+    <div class="data-card">
+      <span class="data-num">$12.8B</span>
+      <div class="data-lbl">Combined just value of identified absentee-owned residential properties in Okaloosa County alone.</div>
+    </div>
+    <div class="data-card">
+      <span class="data-num">1,236</span>
+      <div class="data-lbl">HOT leads — scored 70+ out of 100. Out-of-state, long-term owners with high equity. Ready to contact immediately.</div>
+    </div>
+  </div>
+
+  <!-- HOW IT WORKS -->
+  <div class="section-label">
+    <div class="sl-line"></div>
+    <span class="sl-text">How It Works</span>
+    <div class="sl-line"></div>
+  </div>
+
+  <div class="how-grid">
+    <div class="how-step">
+      <span class="how-num">Step 01</span>
+      <div class="how-title">We Pull the Data</div>
+      <p class="how-desc">Florida and Indiana publish public property records for every county. We pull them, clean them, and build a complete ownership database for your exact market — automatically.</p>
+    </div>
+    <div class="how-step">
+      <span class="how-num">Step 02</span>
+      <div class="how-title">We Score Every Lead</div>
+      <p class="how-desc">Our 100-point scoring model identifies the most motivated sellers — combining ownership duration, equity estimates, property value, geography, and distress signals into a ranked HOT list.</p>
+    </div>
+    <div class="how-step">
+      <span class="how-num">Step 03</span>
+      <div class="how-title">We Build the Systems</div>
+      <p class="how-desc">Lead intelligence, listing machines, transaction trackers, CRM setup, content automation — we build the operational infrastructure so you can focus entirely on clients and closings.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p class="contact">Ryan Clark · AI Real Estate Intelligence Team</p>
+    <p>Former REALTOR® · MIBOR Member 2012–2016 · Top 50 Indiana Agents</p>
+    <p style="margin-top:8px;color:rgba(201,168,76,0.3)">All briefs are conceptual strategic vision documents · Data sourced from public records</p>
+  </div>
+
+</div>
+</body>
+</html>

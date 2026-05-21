@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shelby Baker — Operations & Marketing Vision</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #07101c;
+    --deep:   #0b1828;
+    --panel:  #0f2035;
+    --rose:   #d4728a;
+    --rose2:  #e89aac;
+    --gold:   #c9a84c;
+    --gold2:  #e8c97a;
+    --cream:  #f0ebe0;
+    --muted:  #7a8fa8;
+    --soft:   #b8c8d8;
+    --white:  #ffffff;
+    --red:    #e74c3c;
+    --green:  #27ae60;
+    --teal:   #2dd4bf;
+    --orange: #e07b39;
+    --line:   rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--ink); color:var(--soft); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.7; }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 0% 0%, rgba(212,114,138,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(201,168,76,0.04) 0%, transparent 55%);
+    pointer-events:none; z-index:0;
+  }
+  .wrap { max-width:980px; margin:0 auto; padding:80px 48px; position:relative; z-index:1; }
+
+  /* ── LABEL ── */
+  .doc-label { display:inline-flex; align-items:center; gap:10px; background:rgba(212,114,138,0.07); border:1px solid rgba(212,114,138,0.2); border-radius:4px; padding:7px 16px; margin-bottom:72px; opacity:0; animation:rise 0.5s ease forwards 0.1s; }
+  .pip { width:6px; height:6px; border-radius:50%; background:var(--rose); animation:breathe 3s ease infinite; }
+  @keyframes breathe { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .doc-label span { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--rose); text-transform:uppercase; }
+
+  /* ── COVER ── */
+  .cover { margin-bottom:96px; padding-bottom:72px; border-bottom:1px solid var(--line); opacity:0; animation:rise 0.9s ease forwards 0.15s; }
+  .cover-eye { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.25em; color:var(--rose); text-transform:uppercase; margin-bottom:20px; }
+  .cover-title { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,5.5vw,68px); font-weight:600; color:var(--white); line-height:1.05; margin-bottom:24px; }
+  .cover-title em { color:var(--rose2); font-style:italic; }
+  .cover-body { font-size:15px; color:var(--muted); max-width:580px; line-height:1.85; margin-bottom:44px; }
+  .cover-chips { display:flex; gap:12px; flex-wrap:wrap; }
+  .chip { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:6px 14px; border-radius:4px; border:1px solid rgba(212,114,138,0.2); color:var(--rose); background:rgba(212,114,138,0.05); }
+  .chip.gold { border-color:rgba(201,168,76,0.2); color:var(--gold); background:rgba(201,168,76,0.05); }
+  .chip.red  { border-color:rgba(231,76,60,0.25); color:#ff6b6b; background:rgba(231,76,60,0.07); }
+
+  /* ── DIVIDER ── */
+  .divider { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+  .d-num  { font-family:'DM Mono',monospace; font-size:9px; color:rgba(212,114,138,0.5); letter-spacing:0.15em; }
+  .d-line { flex:1; height:1px; background:var(--line); }
+  .d-tag  { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--rose); text-transform:uppercase; white-space:nowrap; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom:88px; opacity:0; animation:rise 0.7s ease forwards; }
+  h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.2vw,40px); font-weight:600; color:var(--white); line-height:1.15; margin-bottom:14px; }
+  h2 em { color:var(--rose2); font-style:italic; }
+  .section-lead { font-size:14px; color:var(--muted); max-width:640px; line-height:1.85; margin-bottom:40px; }
+
+  /* ── PANELS ── */
+  .panel { background:var(--panel); border-radius:10px; padding:32px; border:1px solid var(--line); margin-bottom:20px; }
+  .pt { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--rose); margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .pt.gold  { color:var(--gold); }
+  .pt.green { color:var(--green); }
+  .pt.red   { color:#ff6b6b; }
+  .pt.teal  { color:var(--teal); }
+
+  /* ── GRIDS ── */
+  .two-col   { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px; }
+
+  /* ── FACTS ROW ── */
+  .facts-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-bottom:48px; }
+  .fact { background:var(--panel); padding:24px 20px; position:relative; overflow:hidden; }
+  .fact:first-child { border-radius:8px 0 0 8px; }
+  .fact:last-child  { border-radius:0 8px 8px 0; }
+  .fact::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; }
+  .fact.rose::after   { background:linear-gradient(90deg,var(--rose),var(--rose2)); }
+  .fact.red::after    { background:linear-gradient(90deg,#e74c3c,#ff6b6b); }
+  .fact.gold::after   { background:linear-gradient(90deg,var(--gold),var(--gold2)); }
+  .fact.green::after  { background:linear-gradient(90deg,var(--green),#2ecc71); }
+  .fact-val { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; line-height:1; margin-bottom:6px; }
+  .fact.rose  .fact-val { color:var(--rose2); }
+  .fact.red   .fact-val { color:#ff6b6b; }
+  .fact.gold  .fact-val { color:var(--gold2); }
+  .fact.green .fact-val { color:#2ecc71; }
+  .fact-lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+  .fact-src { font-family:'DM Mono',monospace; font-size:8px; margin-top:8px; text-transform:uppercase; letter-spacing:0.1em; }
+  .fact.rose  .fact-src { color:rgba(212,114,138,0.35); }
+  .fact.red   .fact-src { color:rgba(231,76,60,0.4); }
+  .fact.gold  .fact-src { color:rgba(201,168,76,0.35); }
+  .fact.green .fact-src { color:rgba(39,174,96,0.35); }
+
+  /* ── DATA ROWS ── */
+  .dr { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .dr:last-child { border-bottom:none; }
+  .dr-name { font-size:13px; color:var(--cream); margin-bottom:3px; }
+  .dr-sub  { font-size:11px; color:var(--muted); line-height:1.5; }
+  .dr-right { flex-shrink:0; text-align:right; }
+  .dr-val  { font-family:'DM Mono',monospace; font-size:12px; color:var(--rose2); white-space:nowrap; margin-bottom:4px; }
+  .badge { display:inline-block; font-family:'DM Mono',monospace; font-size:8px; padding:2px 7px; border-radius:3px; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+  .b-confirmed { background:rgba(212,114,138,0.1); color:var(--rose2); border:1px solid rgba(212,114,138,0.2); }
+  .b-estimated { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .b-concept   { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .b-urgent    { background:rgba(231,76,60,0.1); color:#ff6b6b; border:1px solid rgba(231,76,60,0.25); }
+  .b-now       { background:rgba(39,174,96,0.1); color:#2ecc71; border:1px solid rgba(39,174,96,0.2); }
+
+  /* ── MACHINE CARDS ── */
+  .machine { border-radius:10px; padding:28px; border:1px solid var(--line); background:rgba(255,255,255,0.02); position:relative; overflow:hidden; margin-bottom:16px; }
+  .machine::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
+  .machine.rose::before   { background:linear-gradient(180deg,var(--rose),var(--rose2)); }
+  .machine.gold::before   { background:linear-gradient(180deg,var(--gold),var(--gold2)); }
+  .machine.green::before  { background:linear-gradient(180deg,var(--green),#2ecc71); }
+  .machine.teal::before   { background:linear-gradient(180deg,var(--teal),#5eead4); }
+  .machine.red::before    { background:linear-gradient(180deg,#e74c3c,#ff6b6b); }
+  .machine.orange::before { background:linear-gradient(180deg,var(--orange),#f0a060); }
+  .machine-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+  .machine-icon-name { display:flex; align-items:center; gap:12px; }
+  .machine-icon { font-size:20px; }
+  .machine-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--white); }
+  .machine-status { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; letter-spacing:0.1em; flex-shrink:0; }
+  .ms-concept { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .ms-urgent  { background:rgba(231,76,60,0.1); color:#ff6b6b; border:1px solid rgba(231,76,60,0.25); }
+  .ms-quick   { background:rgba(39,174,96,0.1); color:#2ecc71; border:1px solid rgba(39,174,96,0.2); }
+  .machine-desc { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+  .machine-steps { list-style:none; }
+  .machine-steps li { font-size:12px; color:var(--soft); padding:7px 0; border-bottom:1px solid var(--line); padding-left:16px; position:relative; }
+  .machine-steps li:last-child { border-bottom:none; }
+  .machine-steps li::before { content:'→'; position:absolute; left:0; color:var(--rose); font-family:'DM Mono',monospace; font-size:10px; top:9px; }
+  .machine-steps li.gold::before  { color:var(--gold); }
+  .machine-steps li.green::before { color:var(--green); }
+  .machine-steps li.teal::before  { color:var(--teal); }
+  .machine-steps li.red::before   { color:#ff6b6b; }
+
+  /* ── CALLOUT ── */
+  .callout { background:linear-gradient(135deg,rgba(212,114,138,0.09),rgba(212,114,138,0.02)); border:1px solid rgba(212,114,138,0.22); border-radius:10px; padding:36px 40px; margin-bottom:24px; }
+  .callout.red { background:linear-gradient(135deg,rgba(231,76,60,0.09),rgba(231,76,60,0.02)); border-color:rgba(231,76,60,0.25); }
+  .callout-eye { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:12px; }
+  .callout.red .callout-eye { color:#ff6b6b; }
+  .callout:not(.red) .callout-eye { color:var(--rose); }
+  .callout h3 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--white); margin-bottom:12px; }
+  .callout p { font-size:13px; color:var(--muted); line-height:1.8; max-width:660px; }
+
+  /* ── PILLARS ── */
+  .pillar { border-radius:10px; padding:28px; text-align:center; border:1px solid var(--line); background:rgba(255,255,255,0.02); }
+  .pillar-icon { font-size:28px; margin-bottom:14px; display:block; }
+  .pillar-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:8px; }
+  .pillar-desc { font-size:12px; color:var(--muted); line-height:1.7; }
+  .pillar-who  { font-family:'DM Mono',monospace; font-size:9px; margin-top:14px; padding:5px 12px; border-radius:3px; display:inline-block; letter-spacing:0.1em; }
+  .pillar.rose   .pillar-name { color:var(--rose2); }
+  .pillar.gold   .pillar-name { color:var(--gold2); }
+  .pillar.teal   .pillar-name { color:#5eead4; }
+  .pillar.rose   .pillar-who  { background:rgba(212,114,138,0.08); color:var(--rose); border:1px solid rgba(212,114,138,0.2); }
+  .pillar.gold   .pillar-who  { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .pillar.teal   .pillar-who  { background:rgba(45,212,191,0.08); color:var(--teal); border:1px solid rgba(45,212,191,0.2); }
+
+  /* ── MARKETING GAP CARDS ── */
+  .gap-card { border-radius:10px; padding:24px; border:1px solid rgba(231,76,60,0.2); background:rgba(231,76,60,0.04); margin-bottom:14px; display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:start; }
+  .gap-icon  { font-size:22px; padding-top:2px; }
+  .gap-title { font-size:14px; color:var(--cream); margin-bottom:4px; font-weight:500; }
+  .gap-desc  { font-size:12px; color:var(--muted); line-height:1.6; }
+  .gap-fix   { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; background:rgba(39,174,96,0.1); color:#2ecc71; border:1px solid rgba(39,174,96,0.2); white-space:nowrap; flex-shrink:0; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.18); border-radius:10px; padding:32px 36px; margin-bottom:48px; }
+  .disclaimer-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .disclaimer p { font-size:12px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .disclaimer p:last-child { margin-bottom:0; }
+  .disclaimer strong { color:var(--cream); font-weight:500; }
+
+  /* ── FOOTER ── */
+  .footer { text-align:center; padding-top:32px; border-top:1px solid var(--line); opacity:0; animation:rise 0.6s ease forwards 1.2s; }
+  .footer p { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .section:nth-child(1){animation-delay:0.25s} .section:nth-child(2){animation-delay:0.35s}
+  .section:nth-child(3){animation-delay:0.45s} .section:nth-child(4){animation-delay:0.50s}
+  .section:nth-child(5){animation-delay:0.55s} .section:nth-child(6){animation-delay:0.60s}
+  .section:nth-child(7){animation-delay:0.65s} .section:nth-child(8){animation-delay:0.70s}
+
+  @media(max-width:720px){
+    .wrap{padding:48px 24px;}
+    .facts-row,.two-col,.three-col{grid-template-columns:1fr 1fr;}
+    .gap-card{grid-template-columns:auto 1fr;}
+    .gap-fix{grid-column:1/-1;}
+    .fact:first-child{border-radius:8px 8px 0 0;}
+    .fact:last-child{border-radius:0 0 8px 8px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LABEL -->
+  <div class="doc-label">
+    <div class="pip"></div>
+    <span>Operations & Marketing Vision · Strategic Mock-Up · Conceptual</span>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eye">Coldwell Banker Realty · Navarre, Florida · Santa Rosa County</div>
+    <h1 class="cover-title">
+      A Strategic Vision<br>
+      <em>for Shelby Baker</em>
+    </h1>
+    <p class="cover-body">
+      Shelby has built a strong foundation — 10 years of experience, deep new construction expertise, an award-winning reputation, and a personal brand that stands out in Navarre. This document explores two things: the marketing gaps that may be costing her business right now, and the operational systems that could take her to the next level.
+    </p>
+    <div class="cover-chips">
+      <span class="chip">Marketing Gaps</span>
+      <span class="chip">Google Presence</span>
+      <span class="chip">Lead Intelligence</span>
+      <span class="chip red">⚠ Missing from Maps</span>
+      <span class="chip gold">New Construction Niche</span>
+      <span class="chip gold">Operations Systems</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: WHO SHELBY IS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">01</span><div class="d-line"></div><span class="d-tag">Who Shelby Baker Is</span></div>
+    <h2>New Construction Expert. <em>Award Winner. Under the Radar.</em></h2>
+    <p class="section-lead">Shelby has earned real credentials — a decade of experience, a new construction certification, luxury market expertise, and a 5-star reputation. The problem isn't her skill. It's that not enough people in her market can find her. That's fixable.</p>
+
+    <div class="facts-row">
+      <div class="fact rose">
+        <div class="fact-val">10 yrs</div>
+        <div class="fact-lbl">Years in real estate · Licensed FL agent</div>
+        <div class="fact-src">Confirmed · HomeLight</div>
+      </div>
+      <div class="fact gold">
+        <div class="fact-val">5.0★</div>
+        <div class="fact-lbl">RateMyAgent rating · Award winner · 9 verified reviews</div>
+        <div class="fact-src">Confirmed · RateMyAgent</div>
+      </div>
+      <div class="fact rose">
+        <div class="fact-val">970</div>
+        <div class="fact-lbl">Facebook followers · Active · "Your go-to girl for new construction"</div>
+        <div class="fact-src">Confirmed · Facebook</div>
+      </div>
+      <div class="fact red">
+        <div class="fact-val">⚠ 0</div>
+        <div class="fact-lbl">Google Business Profile · Not on Google Maps</div>
+        <div class="fact-src">Gap · Urgent Fix Needed</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="pt">Publicly Observable Profile</div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Brokerage & Location</div>
+          <div class="dr-sub">Coldwell Banker Realty · 8871 Navarre Pkwy · Navarre, FL 32566 · Santa Rosa County</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Specialty — New Construction</div>
+          <div class="dr-sub">New Construction Agent Certification · Former architectural supervisor at Holley by the Sea · Builder relationships</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Luxury Market Designation</div>
+          <div class="dr-sub">Sales specialist in new construction AND luxury real estate per professional profile</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Association Involvement</div>
+          <div class="dr-sub">Emerald Coast Association of Realtors · NAR · Women's Council of REALTORS · Leadership roles held</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Recent Transaction Volume</div>
+          <div class="dr-sub">15 home transactions in past 12 months · Per HomeLight · Not independently verified</div>
+        </div>
+        <span class="badge b-estimated">Estimated</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Personal Website</div>
+          <div class="dr-sub">shelbybakersells.com — "Premier Navarre Real Estate Expert" · Active online presence</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: MARKETING GAPS — THE BIG SECTION -->
+  <div class="section">
+    <div class="divider"><span class="d-num">02</span><div class="d-line"></div><span class="d-tag">⚠ Marketing Gaps — Fix These First</span></div>
+    <h2>The Visibility Problem <em>Costing Her Business</em></h2>
+    <p class="section-lead">Shelby's biggest opportunity isn't a new system or a new strategy. It's fixing the basic digital presence gaps that are quietly sending potential clients to other agents. Every day these gaps exist is a day someone searches "Navarre realtor" and doesn't find her.</p>
+
+    <div class="callout red">
+      <div class="callout-eye">⚠ Critical Gap — Immediate Action Required</div>
+      <h3>Shelby is invisible on Google Maps.</h3>
+      <p>When someone in Navarre searches "realtor near me" or "Navarre real estate agent" on Google, Shelby doesn't appear in the map results. Her competitors do. Google Business Profile is free, takes about 30 minutes to set up, and is one of the highest-ROI marketing actions any local business can take. Every buyer or seller who searches Google and doesn't find her is potentially lost to an agent with a worse track record but a better Google presence.</p>
+    </div>
+
+    <!-- GAP CARDS -->
+    <div class="gap-card">
+      <span class="gap-icon">🗺️</span>
+      <div>
+        <div class="gap-title">No Google Business Profile</div>
+        <div class="gap-desc">Shelby does not appear on Google Maps when searching "Navarre realtor" or "real estate agent Navarre FL." This is the single most impactful free marketing tool available to any local business. Competitors with fewer reviews and less experience appear above her simply because they claimed their profile.</div>
+      </div>
+      <span class="gap-fix">Fix in 30 min · Free</span>
+    </div>
+
+    <div class="gap-card">
+      <span class="gap-icon">⭐</span>
+      <div>
+        <div class="gap-title">Only 9 Reviews Publicly Visible</div>
+        <div class="gap-desc">Shelby has a perfect 5.0 on RateMyAgent and strong reviews on Realtor.com — but with only 9 publicly visible reviews across platforms, she appears less established than she is. Agents with 50+ Google reviews consistently outrank agents with better track records but fewer reviews. A systematic post-closing review request could fix this in 60–90 days.</div>
+      </div>
+      <span class="gap-fix">Quick Win · 60 Days</span>
+    </div>
+
+    <div class="gap-card">
+      <span class="gap-icon">📸</span>
+      <div>
+        <div class="gap-title">New Construction Expertise Not Fully Branded</div>
+        <div class="gap-desc">Shelby's new construction background — including her architectural supervisor role at one of Florida's largest HOAs — is a genuine competitive advantage that most agents can't claim. But it's buried in her professional bio rather than front and center in her marketing. "The agent who understands what goes into building a home" is a powerful, ownable brand position in Navarre's active new construction market.</div>
+      </div>
+      <span class="gap-fix">Branding Opportunity</span>
+    </div>
+
+    <div class="gap-card">
+      <span class="gap-icon">📊</span>
+      <div>
+        <div class="gap-title">No Visible Market Report or Data Content</div>
+        <div class="gap-desc">Shelby's Facebook is active but focused primarily on listings and personal content. She's missing the market authority content — monthly neighborhood stats, new construction pipeline updates, Santa Rosa County trends — that would position her as the go-to expert in her area. This type of content also drives SEO and long-term organic search visibility.</div>
+      </div>
+      <span class="gap-fix">Content Strategy</span>
+    </div>
+
+    <div class="gap-card">
+      <span class="gap-icon">🔗</span>
+      <div>
+        <div class="gap-title">Profile Fragmentation</div>
+        <div class="gap-desc">Shelby's presence is split across shelbybakersells.com, Coldwell Banker, Realtor.com, RateMyAgent, and Facebook — but they're not cohesive. Each platform tells a slightly different story. A unified personal brand with consistent messaging, the same photo, the same tagline, and the same specialty focus would dramatically increase her recognition and searchability.</div>
+      </div>
+      <span class="gap-fix">Brand Consistency</span>
+    </div>
+  </div>
+
+  <!-- SECTION 3: MARKETING STRATEGY -->
+  <div class="section">
+    <div class="divider"><span class="d-num">03</span><div class="d-line"></div><span class="d-tag">Marketing Strategy</span></div>
+    <h2>Building a <em>Market Authority Brand</em></h2>
+    <p class="section-lead">Once the gaps are fixed, the opportunity is to build Shelby into the undisputed new construction and luxury authority in Santa Rosa County — the agent builders call first, the agent relocation buyers find first, and the agent whose name comes up every time someone mentions Navarre real estate.</p>
+
+    <div class="machine rose">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🗺️</span>
+          <span class="machine-name">Google Business Profile Setup & Optimization</span>
+        </div>
+        <span class="machine-status ms-urgent">Do This Week</span>
+      </div>
+      <p class="machine-desc">This is the single highest-ROI action Shelby can take right now. A properly optimized Google Business Profile puts her on the map — literally — for every local search. With her existing 5-star reputation, reviews will come quickly once she starts asking for them systematically.</p>
+      <ul class="machine-steps">
+        <li class="red">Claim and verify Google Business Profile at her Navarre address — free, 30 minutes</li>
+        <li class="red">Add professional photos, service descriptions, specialties, and contact info</li>
+        <li class="red">Set up post-closing review request sequence — automated email 3 days after each closing</li>
+        <li class="red">Target 25 Google reviews within 90 days — transforms her search visibility overnight</li>
+        <li class="red">Post weekly market updates directly on Google Business — boosts local search ranking</li>
+      </ul>
+    </div>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏗️</span>
+          <span class="machine-name">New Construction Authority Content System</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Shelby has a background no other Navarre agent can claim — she was literally an architectural supervisor for Holley by the Sea, one of Florida's largest HOAs. That's a powerful story. A content system built around new construction expertise could make her the first call for every builder, developer, and relocation buyer in the area.</p>
+      <ul class="machine-steps">
+        <li class="gold">Monthly new construction market report — active communities, price per sqft, inventory levels</li>
+        <li class="gold">Builder spotlight series — spotlight one Navarre/Navarre Beach builder per month</li>
+        <li class="gold">"What I learned supervising architectural plans" — content series that no other agent can write</li>
+        <li class="gold">New construction buyer guide for Santa Rosa County — lead magnet for her website</li>
+        <li class="gold">AI drafts all content in Shelby's voice — she reviews and posts</li>
+      </ul>
+    </div>
+
+    <div class="machine teal">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📱</span>
+          <span class="machine-name">Social Media Consistency Engine</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Shelby has 970 Facebook followers and an active presence — but consistency is the key to algorithm growth. A content calendar with pre-drafted posts across Facebook, Instagram, and Google Business could triple her organic reach without adding to her workload.</p>
+      <ul class="machine-steps">
+        <li>Weekly content calendar — drafted monthly in advance · Shelby approves in one sitting</li>
+        <li>Mix of listing posts, market stats, new construction updates, and personal brand content</li>
+        <li>Just listed / just sold templates — branded, consistent, professional · Generated from MLS data</li>
+        <li>Monthly "Navarre market update" video script — Shelby records a 60-second video · Maximum authority</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: LEAD INTELLIGENCE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">04</span><div class="d-line"></div><span class="d-tag">Lead Intelligence</span></div>
+    <h2>Santa Rosa County's <em>Hidden Seller Pool</em></h2>
+    <p class="section-lead">Navarre sits in Santa Rosa County — a fast-growing market with strong military relocation activity, new construction demand, and a significant absentee owner population. The same public data system we built for Okaloosa County can be replicated here.</p>
+
+    <div class="machine rose">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🎯</span>
+          <span class="machine-name">Santa Rosa County Absentee Owner System</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Florida's public property data covers all 67 counties — including Santa Rosa. The same absentee owner identification and lead scoring system we built for Okaloosa can be rebuilt for Shelby's exact market. Navarre has a significant vacation home and investment property population given its proximity to the beach.</p>
+      <ul class="machine-steps">
+        <li>Pull Santa Rosa County 2025 NAL Tax Roll — same methodology as Okaloosa County</li>
+        <li>Identify absentee owners in Navarre, Navarre Beach, Gulf Breeze, and surrounding areas</li>
+        <li>Score each lead — beach proximity, long-term ownership, out-of-state owners, property value</li>
+        <li>Flag new construction properties specifically — Shelby's sweet spot, buyers and sellers</li>
+        <li>Deliver monthly ranked HOT list — Shelby's ready-to-contact motivated seller pipeline</li>
+      </ul>
+    </div>
+
+    <div class="machine green">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🪖</span>
+          <span class="machine-name">Military Relocation Intelligence</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Navarre is directly adjacent to Hurlburt Field and Eglin Air Force Base — two of the largest military installations in the country. Military families relocate on 2–3 year cycles, creating a constant flow of buyers and sellers. A system targeting military homeowners approaching their typical PCS window could be a significant lead source unique to Shelby's market.</p>
+      <ul class="machine-steps">
+        <li class="green">Identify properties in military-adjacent zip codes purchased 2–3 years ago</li>
+        <li class="green">Cross-reference with absentee owner data — military who've already PCS'd and retained property</li>
+        <li class="green">Alert Shelby to properties likely to hit the market in the next 6 months</li>
+        <li class="green">Outreach messaging tailored to military families — "When you PCS, we make it easy"</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 5: OPERATIONS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">05</span><div class="d-line"></div><span class="d-tag">Operations Systems</span></div>
+    <h2>From Appointment <em>to Closing — Effortlessly</em></h2>
+    <p class="section-lead">The same listing machine and transaction systems we've designed for other agents apply directly to Shelby's business — with one important addition: new construction transactions have unique timelines, builder communication requirements, and milestone tracking that a standard system doesn't cover.</p>
+
+    <div class="two-col">
+      <div class="machine rose" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">🏗️</span>
+            <span class="machine-name">New Construction Transaction Tracker</span>
+          </div>
+          <span class="machine-status ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">New construction transactions are longer and more complex than resale — build timelines, draw schedules, inspection phases, and builder communication all need tracking. A system built specifically for new construction could be Shelby's biggest operational win.</p>
+        <ul class="machine-steps">
+          <li>Track build milestone timeline from contract to close</li>
+          <li>Builder communication log — what was promised, when</li>
+          <li>Phase inspection reminders — foundation, framing, final</li>
+          <li>Client update emails drafted automatically at each milestone</li>
+        </ul>
+      </div>
+
+      <div class="machine gold" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📋</span>
+            <span class="machine-name">Pre-Listing Intelligence Package</span>
+          </div>
+          <span class="machine-status ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">Every listing appointment automatically triggers a full property brief — comp analysis, ownership history, neighborhood trends, and estimated equity. Shelby walks in knowing more about the seller's property than they do.</p>
+        <ul class="machine-steps">
+          <li class="gold">Pull Santa Rosa County property record automatically</li>
+          <li class="gold">Comparable sales within 0.5 miles · Last 90 days</li>
+          <li class="gold">New construction activity nearby — listings, pricing, competition</li>
+          <li class="gold">One-page brief delivered before the appointment</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: PARTNERSHIP -->
+  <div class="section">
+    <div class="divider"><span class="d-num">06</span><div class="d-line"></div><span class="d-tag">The Partnership Model</span></div>
+    <h2>Three People. <em>Every Gap Closed.</em></h2>
+    <p class="section-lead">Shelby has the skills, the credentials, and the reputation. What she needs is the infrastructure — the marketing presence, the lead systems, and the operational support — to match her talent with her visibility.</p>
+
+    <div class="three-col">
+      <div class="pillar rose">
+        <span class="pillar-icon">🧠</span>
+        <div class="pillar-name">Strategy & Systems</div>
+        <p class="pillar-desc">Identifies the gaps, designs the solutions, builds the lead intelligence systems, and manages the overall strategy for closing the visibility gap and growing the pipeline.</p>
+        <span class="pillar-who">Ryan — Operations Lead</span>
+      </div>
+      <div class="pillar gold">
+        <span class="pillar-icon">⚡</span>
+        <div class="pillar-name">Technical Build</div>
+        <p class="pillar-desc">Builds the data pipelines, automation scripts, and integrations. Turns strategy into working systems. Fast, reliable, no overhead required.</p>
+        <span class="pillar-who">Junior — Technical Lead</span>
+      </div>
+      <div class="pillar teal">
+        <span class="pillar-icon">🤖</span>
+        <div class="pillar-name">AI Intelligence Layer</div>
+        <p class="pillar-desc">Drafts market reports, social content, listing descriptions, client emails, and lead scoring — all in Shelby's voice. She reviews and approves. AI does the heavy lifting.</p>
+        <span class="pillar-who">Claude — AI Engine</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eye">The Core Promise</div>
+      <h3>Shelby's talent deserves a platform that matches it.</h3>
+      <p>Ten years of experience. New construction expertise. Luxury designations. Award-winning reputation. A 5-star track record. The only thing standing between Shelby and being the dominant agent in Navarre is visibility — and visibility is exactly what we fix first. Everything else builds from there.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="disclaimer-title">Important Notice</div>
+    <p><strong>This is a conceptual strategic vision document.</strong> The marketing gaps identified — particularly the missing Google Business Profile — are based on publicly observable information as of May 2026 and should be verified directly.</p>
+    <p><strong>Transaction and production figures</strong> are sourced from HomeLight's public database and should be treated as estimates rather than verified facts. All other data is clearly labeled by source.</p>
+    <p><strong>The intent of this document</strong> is to demonstrate a genuine understanding of Shelby's market position and the specific opportunities available to her — and to open a conversation about what we could build together, starting with the quick wins that cost nothing.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Strategic Operations & Marketing Vision · Shelby Baker · Coldwell Banker Realty · Navarre, Florida</p>
+    <p>Prepared by Ryan · AI Engine: Claude · Technical: Junior · Conceptual · Not Yet Built</p>
+  </div>
+
+</div>
+</body>
+</html>

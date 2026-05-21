@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shannon Gilbert — Complete Operations Vision</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #07101c;
+    --deep:   #0b1828;
+    --panel:  #0f2035;
+    --teal:   #2dd4bf;
+    --teal2:  #5eead4;
+    --gold:   #c9a84c;
+    --gold2:  #e8c97a;
+    --cream:  #f0ebe0;
+    --muted:  #7a8fa8;
+    --soft:   #b8c8d8;
+    --white:  #ffffff;
+    --red:    #e74c3c;
+    --orange: #e67e22;
+    --green:  #27ae60;
+    --purple: #9b59b6;
+    --line:   rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--ink); color:var(--soft); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.7; }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 0% 0%, rgba(45,212,191,0.05) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(201,168,76,0.04) 0%, transparent 55%);
+    pointer-events:none; z-index:0;
+  }
+  .wrap { max-width:980px; margin:0 auto; padding:80px 48px; position:relative; z-index:1; }
+
+  /* ── LABEL ── */
+  .doc-label {
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(45,212,191,0.06); border:1px solid rgba(45,212,191,0.18);
+    border-radius:4px; padding:7px 16px; margin-bottom:72px;
+    opacity:0; animation:rise 0.5s ease forwards 0.1s;
+  }
+  .pip { width:6px; height:6px; border-radius:50%; background:var(--teal); animation:breathe 3s ease infinite; }
+  @keyframes breathe { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .doc-label span { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--teal); text-transform:uppercase; }
+
+  /* ── COVER ── */
+  .cover { margin-bottom:96px; padding-bottom:72px; border-bottom:1px solid var(--line); opacity:0; animation:rise 0.9s ease forwards 0.15s; }
+  .cover-eye { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.25em; color:var(--teal); text-transform:uppercase; margin-bottom:20px; }
+  .cover-title { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,5.5vw,68px); font-weight:600; color:var(--white); line-height:1.05; margin-bottom:24px; }
+  .cover-title em { color:var(--teal2); font-style:italic; }
+  .cover-body { font-size:15px; color:var(--muted); max-width:580px; line-height:1.85; margin-bottom:44px; }
+  .cover-chips { display:flex; gap:12px; flex-wrap:wrap; }
+  .chip { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:6px 14px; border-radius:4px; border:1px solid rgba(45,212,191,0.2); color:var(--teal); background:rgba(45,212,191,0.05); }
+  .chip.gold { border-color:rgba(201,168,76,0.2); color:var(--gold); background:rgba(201,168,76,0.05); }
+
+  /* ── DIVIDER ── */
+  .divider { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+  .d-num { font-family:'DM Mono',monospace; font-size:9px; color:rgba(45,212,191,0.5); letter-spacing:0.15em; }
+  .d-line { flex:1; height:1px; background:var(--line); }
+  .d-tag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--teal); text-transform:uppercase; white-space:nowrap; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom:88px; opacity:0; animation:rise 0.7s ease forwards; }
+  h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.2vw,40px); font-weight:600; color:var(--white); line-height:1.15; margin-bottom:14px; }
+  h2 em { color:var(--teal2); font-style:italic; }
+  .section-lead { font-size:14px; color:var(--muted); max-width:620px; line-height:1.85; margin-bottom:40px; }
+
+  /* ── PANEL ── */
+  .panel { background:var(--panel); border-radius:10px; padding:32px; border:1px solid var(--line); margin-bottom:20px; }
+  .pt { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--teal); margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .pt.gold   { color:var(--gold); }
+  .pt.purple { color:var(--purple); }
+  .pt.orange { color:var(--orange); }
+  .pt.green  { color:var(--green); }
+
+  /* ── GRIDS ── */
+  .two-col   { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px; }
+
+  /* ── DATA ROWS ── */
+  .dr { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .dr:last-child { border-bottom:none; }
+  .dr-name { font-size:13px; color:var(--cream); margin-bottom:3px; }
+  .dr-sub  { font-size:11px; color:var(--muted); line-height:1.5; }
+  .dr-right { flex-shrink:0; text-align:right; }
+  .dr-val  { font-family:'DM Mono',monospace; font-size:12px; color:var(--teal2); white-space:nowrap; margin-bottom:4px; }
+  .badge { display:inline-block; font-family:'DM Mono',monospace; font-size:8px; padding:2px 7px; border-radius:3px; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+  .b-confirmed  { background:rgba(45,212,191,0.08); color:var(--teal2); border:1px solid rgba(45,212,191,0.2); }
+  .b-estimated  { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .b-concept    { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+
+  /* ── MACHINE CARDS ── */
+  .machine {
+    border-radius:10px; padding:28px; border:1px solid var(--line);
+    background:rgba(255,255,255,0.02); position:relative; overflow:hidden;
+    margin-bottom:16px;
+  }
+  .machine::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
+  .machine.teal::before   { background:linear-gradient(180deg,var(--teal),var(--teal2)); }
+  .machine.gold::before   { background:linear-gradient(180deg,var(--gold),var(--gold2)); }
+  .machine.orange::before { background:linear-gradient(180deg,var(--orange),#f39c12); }
+  .machine.green::before  { background:linear-gradient(180deg,var(--green),#2ecc71); }
+  .machine.purple::before { background:linear-gradient(180deg,var(--purple),#c39bd3); }
+  .machine.red::before    { background:linear-gradient(180deg,var(--red),#ff6b6b); }
+  .machine-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+  .machine-icon-name { display:flex; align-items:center; gap:12px; }
+  .machine-icon { font-size:20px; }
+  .machine-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--white); }
+  .machine-status { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; letter-spacing:0.1em; flex-shrink:0; }
+  .machine-status.concept { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .machine-desc { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+  .machine-steps { list-style:none; }
+  .machine-steps li { font-size:12px; color:var(--soft); padding:7px 0; border-bottom:1px solid var(--line); padding-left:16px; position:relative; }
+  .machine-steps li:last-child { border-bottom:none; }
+  .machine-steps li::before { content:'→'; position:absolute; left:0; color:var(--teal); font-family:'DM Mono',monospace; font-size:10px; top:9px; }
+  .machine-steps li.gold::before  { color:var(--gold); }
+  .machine-steps li.orange::before{ color:var(--orange); }
+  .machine-steps li.green::before { color:var(--green); }
+
+  /* ── PIPELINE VISUAL ── */
+  .pipeline { display:flex; align-items:stretch; gap:0; margin-bottom:28px; overflow-x:auto; }
+  .pipe-stage { flex:1; min-width:110px; }
+  .pipe-head { padding:14px 16px; text-align:center; }
+  .pipe-head-label { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; margin-bottom:4px; display:block; }
+  .pipe-head-count { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:700; display:block; }
+  .pipe-body { padding:10px 14px; }
+  .pipe-item { font-size:11px; color:var(--muted); padding:5px 0; border-bottom:1px solid var(--line); line-height:1.4; }
+  .pipe-item:last-child { border-bottom:none; }
+  .pipe-arrow { display:flex; align-items:center; padding-top:14px; color:var(--muted); font-size:16px; flex-shrink:0; opacity:0.3; }
+
+  .stage-lead    { background:rgba(45,212,191,0.06); border:1px solid rgba(45,212,191,0.15); border-radius:8px 0 0 8px; }
+  .stage-appt    { background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.15); border-top:1px solid rgba(201,168,76,0.15); border-bottom:1px solid rgba(201,168,76,0.15); border-left:none; border-right:none; }
+  .stage-list    { background:rgba(230,126,34,0.06); border:1px solid rgba(230,126,34,0.15); border-top:1px solid rgba(230,126,34,0.15); border-bottom:1px solid rgba(230,126,34,0.15); border-left:none; border-right:none; }
+  .stage-contract{ background:rgba(155,89,182,0.06); border:1px solid rgba(155,89,182,0.15); border-top:1px solid rgba(155,89,182,0.15); border-bottom:1px solid rgba(155,89,182,0.15); border-left:none; border-right:none; }
+  .stage-close   { background:rgba(39,174,96,0.06); border:1px solid rgba(39,174,96,0.15); border-radius:0 8px 8px 0; }
+
+  .stage-lead    .pipe-head-label { color:var(--teal); }
+  .stage-appt    .pipe-head-label { color:var(--gold); }
+  .stage-list    .pipe-head-label { color:var(--orange); }
+  .stage-contract .pipe-head-label { color:var(--purple); }
+  .stage-close   .pipe-head-label { color:var(--green); }
+
+  .stage-lead    .pipe-head-count { color:var(--teal2); }
+  .stage-appt    .pipe-head-count { color:var(--gold2); }
+  .stage-list    .pipe-head-count { color:var(--orange); }
+  .stage-contract .pipe-head-count { color:#c39bd3; }
+  .stage-close   .pipe-head-count { color:#2ecc71; }
+
+  /* ── CALLOUT ── */
+  .callout { background:linear-gradient(135deg,rgba(45,212,191,0.08),rgba(45,212,191,0.02)); border:1px solid rgba(45,212,191,0.2); border-radius:10px; padding:36px 40px; margin-bottom:24px; }
+  .callout-eye { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--teal); text-transform:uppercase; margin-bottom:12px; }
+  .callout h3 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--white); margin-bottom:12px; }
+  .callout p { font-size:13px; color:var(--muted); line-height:1.8; max-width:640px; }
+
+  /* ── THREE PILLARS ── */
+  .pillar { border-radius:10px; padding:28px; text-align:center; border:1px solid var(--line); background:rgba(255,255,255,0.02); }
+  .pillar-icon { font-size:28px; margin-bottom:14px; display:block; }
+  .pillar-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; color:var(--white); margin-bottom:8px; }
+  .pillar-desc { font-size:12px; color:var(--muted); line-height:1.7; }
+  .pillar-who  { font-family:'DM Mono',monospace; font-size:9px; margin-top:14px; padding:5px 12px; border-radius:3px; display:inline-block; letter-spacing:0.1em; }
+  .pillar.teal .pillar-name { color:var(--teal2); }
+  .pillar.gold .pillar-name { color:var(--gold2); }
+  .pillar.purple .pillar-name { color:#c39bd3; }
+  .pillar.teal .pillar-who  { background:rgba(45,212,191,0.08); color:var(--teal); border:1px solid rgba(45,212,191,0.2); }
+  .pillar.gold .pillar-who  { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .pillar.purple .pillar-who{ background:rgba(155,89,182,0.08); color:#c39bd3; border:1px solid rgba(155,89,182,0.2); }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.18); border-radius:10px; padding:32px 36px; margin-bottom:48px; }
+  .disclaimer-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .disclaimer p { font-size:12px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .disclaimer p:last-child { margin-bottom:0; }
+  .disclaimer strong { color:var(--cream); font-weight:500; }
+
+  /* ── FOOTER ── */
+  .footer { text-align:center; padding-top:32px; border-top:1px solid var(--line); opacity:0; animation:rise 0.6s ease forwards 1.2s; }
+  .footer p { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .section:nth-child(1){animation-delay:0.25s}
+  .section:nth-child(2){animation-delay:0.35s}
+  .section:nth-child(3){animation-delay:0.45s}
+  .section:nth-child(4){animation-delay:0.50s}
+  .section:nth-child(5){animation-delay:0.55s}
+  .section:nth-child(6){animation-delay:0.60s}
+  .section:nth-child(7){animation-delay:0.65s}
+  .section:nth-child(8){animation-delay:0.70s}
+
+  @media(max-width:720px){
+    .wrap { padding:48px 24px; }
+    .two-col,.three-col { grid-template-columns:1fr; }
+    .pipeline { flex-direction:column; }
+    .pipe-arrow { display:none; }
+    .stage-lead,.stage-close { border-radius:8px; }
+    .stage-appt,.stage-list,.stage-contract { border:1px solid var(--line); border-radius:8px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LABEL -->
+  <div class="doc-label">
+    <div class="pip"></div>
+    <span>Operations Vision · Strategic Mock-Up · Conceptual · Not Yet Built</span>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eye">The Gilbert Group · Hamilton County, Indiana</div>
+    <h1 class="cover-title">
+      A Complete Operations Vision<br>
+      <em>for Shannon Gilbert</em>
+    </h1>
+    <p class="cover-body">
+      What if you had a dedicated operations team — powered by human expertise and AI automation — handling everything behind the scenes so you could focus entirely on what you do best? This document explores what that could look like for The Gilbert Group.
+    </p>
+    <div class="cover-chips">
+      <span class="chip">Lead Generation</span>
+      <span class="chip">Listing Machine</span>
+      <span class="chip">Transaction Systems</span>
+      <span class="chip">CRM Intelligence</span>
+      <span class="chip gold">AI Automation</span>
+      <span class="chip gold">Data Analysis</span>
+      <span class="chip gold">Back Office Support</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: THE PARTNERSHIP -->
+  <div class="section">
+    <div class="divider"><span class="d-num">01</span><div class="d-line"></div><span class="d-tag">The Partnership Model</span></div>
+    <h2>Three People. <em>Every Role Covered.</em></h2>
+    <p class="section-lead">This isn't a software pitch. This is a proposal for a working operations partnership — where Shannon focuses on relationships and closings, while a dedicated team handles everything else using the best available tools and AI automation.</p>
+
+    <div class="three-col">
+      <div class="pillar teal">
+        <span class="pillar-icon">🧠</span>
+        <div class="pillar-name">Strategy & Systems</div>
+        <p class="pillar-desc">Designs the overall intelligence architecture. Builds data pipelines, scoring models, lead systems, and automation workflows. Connects the data to the strategy.</p>
+        <span class="pillar-who">Ryan — Operations Lead</span>
+      </div>
+      <div class="pillar gold">
+        <span class="pillar-icon">⚡</span>
+        <div class="pillar-name">Technical Build</div>
+        <p class="pillar-desc">Writes the code. Builds the scrapers, data processors, automation scripts, and integrations. Turns the strategy into working systems. Fast, reliable, precise.</p>
+        <span class="pillar-who">Junior — Technical Lead</span>
+      </div>
+      <div class="pillar purple">
+        <span class="pillar-icon">🤖</span>
+        <div class="pillar-name">AI Intelligence Layer</div>
+        <p class="pillar-desc">The AI engine behind everything — analyzing data, drafting documents, summarizing emails, scoring leads, generating content, and surfacing insights in real time.</p>
+        <span class="pillar-who">Claude — AI Engine</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eye">The Core Promise</div>
+      <h3>Shannon focuses on people. We handle the rest.</h3>
+      <p>Every hour Shannon spends managing paperwork, chasing data, setting up systems, or doing repetitive administrative work is an hour she's not in front of a client. The vision here is simple: build the infrastructure so her time is protected and every opportunity is captured.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 2: LEAD GENERATION -->
+  <div class="section">
+    <div class="divider"><span class="d-num">02</span><div class="d-line"></div><span class="d-tag">Lead Generation</span></div>
+    <h2>A Proactive <em>Lead Intelligence System</em></h2>
+    <p class="section-lead">Most agents wait for leads to come to them. What if Shannon's team could identify motivated sellers in Hamilton County before they ever list — using only public data, smart analysis, and the right outreach strategy?</p>
+
+    <div class="machine teal">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🎯</span>
+          <span class="machine-name">The Absentee Owner Machine</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Indiana publishes public property records for every county. By comparing owner mailing addresses to property addresses, it's possible to identify homeowners who don't live at their property — a strong signal of motivated sellers. This system could deliver a fresh, scored lead list to Shannon every month.</p>
+      <ul class="machine-steps">
+        <li>Pull Hamilton County public property records monthly — owner names, addresses, assessed values</li>
+        <li>Identify absentee owners — mailing address differs from property address</li>
+        <li>Score each lead — long-term ownership, out-of-state, high equity, estate situations, property value</li>
+        <li>Deliver a ranked HOT list — Shannon gets the top 50–100 most motivated sellers each month</li>
+        <li>Generate personalized outreach letters — ready to mail, in her voice</li>
+      </ul>
+    </div>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏚</span>
+          <span class="machine-name">The Distressed Property Monitor</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Hamilton County Clerk of Courts publishes lis pendens filings — the legal notice that foreclosure has begun — as public record. Cross-referencing these against high-equity properties could surface sellers who desperately need help before the bank takes their home.</p>
+      <ul class="machine-steps">
+        <li class="gold">Monitor Hamilton County lis pendens filings weekly — new filings only</li>
+        <li class="gold">Cross-reference against properties with estimated equity over $100K</li>
+        <li class="gold">Flag owners who are also absentee — highest motivation to sell quickly</li>
+        <li class="gold">Alert Shannon with a brief summary — who they are, what the property is worth, how to reach them</li>
+      </ul>
+    </div>
+
+    <div class="machine orange">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🔄</span>
+          <span class="machine-name">The Sphere & Referral Re-Engagement System</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Shannon has likely closed 800–1,400+ transactions over 18 years. That's an enormous sphere of past clients. A systematic re-engagement program — timed around ownership anniversaries, market conditions, and equity milestones — could generate consistent warm listing leads from people who already trust her.</p>
+      <ul class="machine-steps">
+        <li>Pull past client list from Lofty CRM — organize by close date and neighborhood</li>
+        <li>Calculate ownership anniversary dates — trigger outreach at 3, 5, 7, and 10 year marks</li>
+        <li>Monitor market value of past client homes — alert when equity has grown significantly</li>
+        <li>Draft personalized anniversary check-in emails — in Shannon's voice — for her review and send</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 3: THE LISTING MACHINE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">03</span><div class="d-line"></div><span class="d-tag">The Listing Machine</span></div>
+    <h2>From Appointment to <em>Active Listing</em></h2>
+    <p class="section-lead">When Shannon gets a listing appointment, she shouldn't be thinking about paperwork, market reports, or presentation materials. Every one of those things should already be done — waiting for her when she walks in the door.</p>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📋</span>
+          <span class="machine-name">Pre-Listing Intelligence Package</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">The moment a listing appointment is confirmed, a system could automatically begin assembling everything Shannon needs — so she walks in prepared, informed, and impressive. Not just a CMA. A complete intelligence package on the property, the seller, and the market.</p>
+      <ul class="machine-steps">
+        <li>Pull public property record — ownership history, assessed value, year built, square footage, tax history</li>
+        <li>Run automated CMA — recent comparable sales within 0.5 miles, last 90 days</li>
+        <li>Analyze the neighborhood — average days on market, price per sqft trends, recent list-to-sale ratios</li>
+        <li>Research the seller — ownership duration, equity estimate, any public filings</li>
+        <li>Draft a one-page property summary — ready for Shannon to review before the appointment</li>
+        <li>Flag anything unusual — recent price reductions nearby, competing active listings, market softening</li>
+      </ul>
+    </div>
+
+    <div class="machine teal">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏆</span>
+          <span class="machine-name">Listing Presentation Builder</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">A dynamic listing presentation — automatically customized for each property and seller — that Shannon can walk in with every time. Not a generic template. A presentation that already has the seller's address, the comparable sales, Shannon's relevant stats for that neighborhood, and a clear pricing recommendation.</p>
+      <ul class="machine-steps">
+        <li>Auto-populate seller name, property address, and listing date into the presentation template</li>
+        <li>Insert neighborhood-specific comps and market trend data</li>
+        <li>Pull Shannon's personal stats for that zip code — her avg days on market, list-to-sale ratio</li>
+        <li>Generate a recommended pricing range with supporting data</li>
+        <li>Output as a polished PDF — branded, professional, ready to present</li>
+      </ul>
+    </div>
+
+    <div class="machine green">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📸</span>
+          <span class="machine-name">Listing Launch Checklist</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Every listing has the same checklist. Photos, staging, MLS input, social posts, open house scheduling, sign orders, lockbox setup. A system that tracks every step, assigns owners, and alerts the team when something is pending — so nothing falls through the cracks.</p>
+      <ul class="machine-steps">
+        <li class="green">Auto-generate the full launch checklist the moment a listing is signed</li>
+        <li class="green">Assign tasks to team members with deadlines</li>
+        <li class="green">Draft MLS description — for Shannon's review and edit</li>
+        <li class="green">Draft 3 social media posts — coming soon, just listed, open house</li>
+        <li class="green">Flag any missing items 48 hours before go-live date</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: TRANSACTION MACHINE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">04</span><div class="d-line"></div><span class="d-tag">Transaction Systems</span></div>
+    <h2>Under Contract to <em>Close — On Autopilot</em></h2>
+    <p class="section-lead">Once a property goes under contract, the real work begins — and it's almost entirely predictable. Every transaction follows the same milestones. A system that tracks every single one means Shannon never has to hold the timeline in her head.</p>
+
+    <!-- PIPELINE VISUAL -->
+    <div class="pipeline">
+      <div class="pipe-stage stage-lead">
+        <div class="pipe-head">
+          <span class="pipe-head-label">Lead</span>
+          <span class="pipe-head-count">∞</span>
+        </div>
+        <div class="pipe-body">
+          <div class="pipe-item">Absentee owner outreach</div>
+          <div class="pipe-item">Sphere re-engagement</div>
+          <div class="pipe-item">Distressed alerts</div>
+          <div class="pipe-item">Referrals incoming</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">›</div>
+      <div class="pipe-stage stage-appt">
+        <div class="pipe-head">
+          <span class="pipe-head-label">Appointment</span>
+          <span class="pipe-head-count">📋</span>
+        </div>
+        <div class="pipe-body">
+          <div class="pipe-item">Pre-listing package ready</div>
+          <div class="pipe-item">CMA auto-generated</div>
+          <div class="pipe-item">Presentation built</div>
+          <div class="pipe-item">Seller researched</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">›</div>
+      <div class="pipe-stage stage-list">
+        <div class="pipe-head">
+          <span class="pipe-head-label">Active Listing</span>
+          <span class="pipe-head-count">🏠</span>
+        </div>
+        <div class="pipe-body">
+          <div class="pipe-item">Launch checklist active</div>
+          <div class="pipe-item">MLS description drafted</div>
+          <div class="pipe-item">Social posts queued</div>
+          <div class="pipe-item">Showing feedback tracked</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">›</div>
+      <div class="pipe-stage stage-contract">
+        <div class="pipe-head">
+          <span class="pipe-head-label">Under Contract</span>
+          <span class="pipe-head-count">📝</span>
+        </div>
+        <div class="pipe-body">
+          <div class="pipe-item">All deadlines tracked</div>
+          <div class="pipe-item">Daily status updates</div>
+          <div class="pipe-item">Lender coordination</div>
+          <div class="pipe-item">Inspection follow-ups</div>
+        </div>
+      </div>
+      <div class="pipe-arrow">›</div>
+      <div class="pipe-stage stage-close">
+        <div class="pipe-head">
+          <span class="pipe-head-label">Closed</span>
+          <span class="pipe-head-count">🎉</span>
+        </div>
+        <div class="pipe-body">
+          <div class="pipe-item">Pin-to-close document</div>
+          <div class="pipe-item">Thank you drafted</div>
+          <div class="pipe-item">Review request sent</div>
+          <div class="pipe-item">Added to sphere system</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="machine purple">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">⏱</span>
+          <span class="machine-name">Transaction Timeline Tracker</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Every transaction has the same critical dates — inspection window, financing contingency, appraisal deadline, walk-through, closing. A system that automatically maps these dates the moment a contract is signed and alerts the team before every single one.</p>
+      <ul class="machine-steps">
+        <li>Extract all key dates from the executed contract automatically</li>
+        <li>Build a countdown timeline — days remaining on each milestone</li>
+        <li>Send proactive alerts 5 days, 2 days, and day-of each deadline</li>
+        <li>Flag any deadlines that have passed without a logged update</li>
+        <li>Generate a daily transaction status summary — one clean view of every active deal</li>
+      </ul>
+    </div>
+
+    <div class="machine green">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📄</span>
+          <span class="machine-name">Pin-to-Close Document Generator</span>
+        </div>
+        <span class="machine-status concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">At the end of every transaction, a clean summary document — automatically generated from the transaction data — that recaps the entire deal. Property details, buyer and seller information, key dates, final sale price, commission details, and any notes. Professional, consistent, effortless.</p>
+      <ul class="machine-steps">
+        <li class="green">Pull all transaction data from Lofty CRM automatically</li>
+        <li class="green">Generate a formatted pin-to-close summary in Shannon's branding</li>
+        <li class="green">Include property details, parties, key dates, final financials</li>
+        <li class="green">Output as a branded PDF — ready to send to all parties at closing</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 5: CRM & BACK OFFICE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">05</span><div class="d-line"></div><span class="d-tag">CRM & Back Office Intelligence</span></div>
+    <h2>Making <em>Lofty Actually Work</em> for Shannon</h2>
+    <p class="section-lead">Shannon is already paying for Lofty — one of the most powerful AI-enabled real estate CRMs available. The fastest win in this entire vision might be simply setting it up properly. Right now it's a Ferrari in park.</p>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="pt">What Lofty Can Do When Properly Configured</div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">AI Copilot — Lead Nurturing</div>
+            <div class="dr-sub">Responds to new leads automatically in Shannon's voice, 24/7, while she sleeps</div>
+          </div>
+          <span class="badge b-confirmed">Available Now</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Smart Plans — Automated Follow-Up</div>
+            <div class="dr-sub">Multi-touch sequences — email, text, task reminders — triggered automatically by lead actions</div>
+          </div>
+          <span class="badge b-confirmed">Available Now</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Pipeline Stages & Transaction Tracking</div>
+            <div class="dr-sub">Visual deal flow from lead to close — every deal in one view</div>
+          </div>
+          <span class="badge b-confirmed">Available Now</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Lead Scoring & Tagging</div>
+            <div class="dr-sub">Prioritize who needs attention today vs. who can wait — automatically</div>
+          </div>
+          <span class="badge b-confirmed">Available Now</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Market Report Automation</div>
+            <div class="dr-sub">Auto-send personalized neighborhood reports to past clients monthly</div>
+          </div>
+          <span class="badge b-confirmed">Available Now</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="pt">Daily AI Operations Layer — On Top of Lofty</div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Morning Inbox Summary</div>
+            <div class="dr-sub">AI reads Gmail + Lofty overnight · Surfaces top 3 priorities before 8am</div>
+          </div>
+          <span class="badge b-concept">Concept</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Email Draft Assistant</div>
+            <div class="dr-sub">Drafts responses to client emails in Shannon's voice — she reviews and sends</div>
+          </div>
+          <span class="badge b-concept">Concept</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Deal Gap Detector</div>
+            <div class="dr-sub">Flags any active deal that hasn't had an update in 48+ hours — before it becomes a problem</div>
+          </div>
+          <span class="badge b-concept">Concept</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Weekly Performance Digest</div>
+            <div class="dr-sub">Auto-generated summary — calls made, leads added, deals progressed, closings this week</div>
+          </div>
+          <span class="badge b-concept">Concept</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Review Request Automation</div>
+            <div class="dr-sub">Sends a personalized Zillow/Google review request 3 days after every closing</div>
+          </div>
+          <span class="badge b-concept">Concept</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: MARKETING -->
+  <div class="section">
+    <div class="divider"><span class="d-num">06</span><div class="d-line"></div><span class="d-tag">Marketing & Content</span></div>
+    <h2>Shannon's Voice. <em>Everywhere. Consistently.</em></h2>
+    <p class="section-lead">Shannon already has 1,900+ Instagram followers and 867 posts. The brand is established. The opportunity is consistency and reach — making sure her market presence reflects the level of agent she actually is, without adding to her workload.</p>
+
+    <div class="two-col">
+      <div class="machine teal" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📱</span>
+            <span class="machine-name">Social Content Engine</span>
+          </div>
+          <span class="machine-status concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">A future content system could monitor Hamilton County market data and draft social posts in Shannon's established voice — ready for her to approve with one tap.</p>
+        <ul class="machine-steps">
+          <li>Weekly market update posts — auto-drafted from MIBOR data</li>
+          <li>Just Listed / Just Sold announcements — generated from Lofty</li>
+          <li>Neighborhood spotlight posts — rotated monthly by zip code</li>
+          <li>Client success stories — drafted from closed transaction data</li>
+        </ul>
+      </div>
+
+      <div class="machine gold" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📧</span>
+            <span class="machine-name">Direct Mail Intelligence</span>
+          </div>
+          <span class="machine-status concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">Physical mail still works — especially for high-equity homeowners who aren't on social media. A monthly targeted mailer to scored absentee owners and long-term owners could generate consistent listing appointments.</p>
+        <ul class="machine-steps">
+          <li class="gold">Pull monthly scored lead list from public data</li>
+          <li class="gold">Generate personalized letter — "Your home may be worth more than you think"</li>
+          <li class="gold">Output print-ready mail merge — ready for Shannon's mail vendor</li>
+          <li class="gold">Track which mailers turn into appointments over time</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7: DATA ANALYSIS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">07</span><div class="d-line"></div><span class="d-tag">Data Analysis & Business Intelligence</span></div>
+    <h2>Understanding <em>Shannon's Own Business</em></h2>
+    <p class="section-lead">Most agents have no idea what their transaction data actually shows. Which neighborhoods are most profitable? Which price ranges close fastest? Where are referrals really coming from? Shannon's 18 years of data could tell a remarkable story — if someone analyzed it.</p>
+
+    <div class="panel">
+      <div class="pt gold">What Shannon's Historical Data Could Reveal — Hypothetical Analysis</div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Neighborhood Concentration Map</div>
+          <div class="dr-sub">Which zip codes and subdivisions have the highest density of her past transactions — her true strongholds</div>
+        </div>
+        <span class="badge b-estimated">Reconstructable</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Average Commission per Price Range</div>
+          <div class="dr-sub">Which price ranges produce the most revenue for the least effort — where to focus outreach</div>
+        </div>
+        <span class="badge b-estimated">Reconstructable</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Referral Source Mapping</div>
+          <div class="dr-sub">Which past clients have sent the most referrals — who deserves the most appreciation</div>
+        </div>
+        <span class="badge b-concept">Requires CRM Access</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Seasonal Transaction Patterns</div>
+          <div class="dr-sub">Which months consistently produce the most volume — when to ramp up lead generation</div>
+        </div>
+        <span class="badge b-estimated">Reconstructable</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Days on Market by Neighborhood</div>
+          <div class="dr-sub">Where Shannon's listings sell fastest vs. the market average — her provable competitive edge by area</div>
+        </div>
+        <span class="badge b-estimated">Reconstructable</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Client Lifetime Value</div>
+          <div class="dr-sub">Which clients have transacted multiple times — and which past clients are statistically likely to move again soon</div>
+        </div>
+        <span class="badge b-concept">Requires CRM Access</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="disclaimer-title">Important Notice</div>
+    <p><strong>This is a conceptual strategic vision document.</strong> Nothing described here has been built yet. Every "machine" and "system" described represents an idea — something that could potentially be built with the right planning, data access, and implementation work.</p>
+    <p><strong>Data accuracy:</strong> Confirmed facts are labeled clearly. Estimated figures are clearly marked as estimates. No MLS or MIBOR data has been accessed. Historical transaction counts and production figures are estimates based on public profile information and should not be treated as verified facts.</p>
+    <p><strong>Any real implementation would require:</strong> Shannon's active participation and data access — MIBOR and MLS permissions where applicable — compliance review with Indiana real estate law — CRM integration planning — and a realistic timeline built together.</p>
+    <p><strong>The intent of this document</strong> is to demonstrate genuine understanding of Shannon's business, her market, and the operational opportunities available to a team like The Gilbert Group — and to start a real conversation about what could be built together.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Complete Operations Vision · The Gilbert Group · Shannon Gilbert · Keller Williams Portfolio · Fishers, Indiana</p>
+    <p>Prepared by Ryan · AI Engine: Claude · Technical: Junior · Conceptual · Not Yet Built</p>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.sent-fill').forEach(el => {
+        el.style.width = (el.dataset.w || 0) + '%';
+      });
+    }, 600);
+  });
+</script>
+</body>
+</html>

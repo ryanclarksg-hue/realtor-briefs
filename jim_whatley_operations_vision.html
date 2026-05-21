@@ -1,0 +1,601 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jim Whatley — Operations Vision · Uber Realty</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #07101c;
+    --deep:   #0b1828;
+    --panel:  #0f2035;
+    --gold:   #c9a84c;
+    --gold2:  #e8c97a;
+    --orange: #e07b39;
+    --orange2:#f0a060;
+    --cream:  #f0ebe0;
+    --muted:  #7a8fa8;
+    --soft:   #b8c8d8;
+    --white:  #ffffff;
+    --red:    #e74c3c;
+    --green:  #27ae60;
+    --teal:   #2dd4bf;
+    --line:   rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--ink); color:var(--soft); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.7; }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 0% 0%, rgba(224,123,57,0.06) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(201,168,76,0.05) 0%, transparent 55%);
+    pointer-events:none; z-index:0;
+  }
+  .wrap { max-width:980px; margin:0 auto; padding:80px 48px; position:relative; z-index:1; }
+
+  /* ── LABEL ── */
+  .doc-label {
+    display:inline-flex; align-items:center; gap:10px;
+    background:rgba(224,123,57,0.07); border:1px solid rgba(224,123,57,0.2);
+    border-radius:4px; padding:7px 16px; margin-bottom:72px;
+    opacity:0; animation:rise 0.5s ease forwards 0.1s;
+  }
+  .pip { width:6px; height:6px; border-radius:50%; background:var(--orange); animation:breathe 3s ease infinite; }
+  @keyframes breathe { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .doc-label span { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--orange); text-transform:uppercase; }
+
+  /* ── COVER ── */
+  .cover { margin-bottom:96px; padding-bottom:72px; border-bottom:1px solid var(--line); opacity:0; animation:rise 0.9s ease forwards 0.15s; }
+  .cover-eye { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.25em; color:var(--orange); text-transform:uppercase; margin-bottom:20px; }
+  .cover-title { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,5.5vw,68px); font-weight:600; color:var(--white); line-height:1.05; margin-bottom:24px; }
+  .cover-title em { color:var(--orange2); font-style:italic; }
+  .cover-body { font-size:15px; color:var(--muted); max-width:580px; line-height:1.85; margin-bottom:44px; }
+  .cover-chips { display:flex; gap:12px; flex-wrap:wrap; }
+  .chip { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:6px 14px; border-radius:4px; border:1px solid rgba(224,123,57,0.2); color:var(--orange); background:rgba(224,123,57,0.05); }
+  .chip.gold { border-color:rgba(201,168,76,0.2); color:var(--gold); background:rgba(201,168,76,0.05); }
+
+  /* ── DIVIDER ── */
+  .divider { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+  .d-num { font-family:'DM Mono',monospace; font-size:9px; color:rgba(224,123,57,0.5); letter-spacing:0.15em; }
+  .d-line { flex:1; height:1px; background:var(--line); }
+  .d-tag { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--orange); text-transform:uppercase; white-space:nowrap; }
+
+  /* ── SECTION ── */
+  .section { margin-bottom:88px; opacity:0; animation:rise 0.7s ease forwards; }
+  h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.2vw,40px); font-weight:600; color:var(--white); line-height:1.15; margin-bottom:14px; }
+  h2 em { color:var(--orange2); font-style:italic; }
+  .section-lead { font-size:14px; color:var(--muted); max-width:640px; line-height:1.85; margin-bottom:40px; }
+
+  /* ── PANELS ── */
+  .panel { background:var(--panel); border-radius:10px; padding:32px; border:1px solid var(--line); margin-bottom:20px; }
+  .pt { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--orange); margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .pt.gold  { color:var(--gold); }
+  .pt.green { color:var(--green); }
+  .pt.teal  { color:var(--teal); }
+
+  /* ── GRIDS ── */
+  .two-col   { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px; }
+
+  /* ── FACTS ROW ── */
+  .facts-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-bottom:48px; }
+  .fact { background:var(--panel); padding:24px 20px; position:relative; overflow:hidden; }
+  .fact:first-child { border-radius:8px 0 0 8px; }
+  .fact:last-child  { border-radius:0 8px 8px 0; }
+  .fact::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; background:linear-gradient(90deg,var(--orange),var(--orange2)); }
+  .fact-val { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; color:var(--orange2); line-height:1; margin-bottom:6px; }
+  .fact-lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+  .fact-src { font-family:'DM Mono',monospace; font-size:8px; color:rgba(224,123,57,0.35); margin-top:8px; text-transform:uppercase; letter-spacing:0.1em; }
+
+  /* ── DATA ROWS ── */
+  .dr { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .dr:last-child { border-bottom:none; }
+  .dr-name { font-size:13px; color:var(--cream); margin-bottom:3px; }
+  .dr-sub  { font-size:11px; color:var(--muted); line-height:1.5; }
+  .dr-right { flex-shrink:0; text-align:right; }
+  .dr-val  { font-family:'DM Mono',monospace; font-size:12px; color:var(--orange2); white-space:nowrap; margin-bottom:4px; }
+  .badge { display:inline-block; font-family:'DM Mono',monospace; font-size:8px; padding:2px 7px; border-radius:3px; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+  .b-confirmed { background:rgba(224,123,57,0.1); color:var(--orange2); border:1px solid rgba(224,123,57,0.2); }
+  .b-estimated { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .b-concept   { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .b-now       { background:rgba(39,174,96,0.1); color:#2ecc71; border:1px solid rgba(39,174,96,0.2); }
+
+  /* ── MACHINE CARDS ── */
+  .machine { border-radius:10px; padding:28px; border:1px solid var(--line); background:rgba(255,255,255,0.02); position:relative; overflow:hidden; margin-bottom:16px; }
+  .machine::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
+  .machine.orange::before { background:linear-gradient(180deg,var(--orange),var(--orange2)); }
+  .machine.gold::before   { background:linear-gradient(180deg,var(--gold),var(--gold2)); }
+  .machine.green::before  { background:linear-gradient(180deg,var(--green),#2ecc71); }
+  .machine.teal::before   { background:linear-gradient(180deg,var(--teal),#5eead4); }
+  .machine.red::before    { background:linear-gradient(180deg,var(--red),#ff6b6b); }
+  .machine-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+  .machine-icon-name { display:flex; align-items:center; gap:12px; }
+  .machine-icon { font-size:20px; }
+  .machine-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--white); }
+  .machine-status { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; letter-spacing:0.1em; flex-shrink:0; }
+  .ms-concept { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .ms-now     { background:rgba(39,174,96,0.1); color:#2ecc71; border:1px solid rgba(39,174,96,0.2); }
+  .machine-desc { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+  .machine-steps { list-style:none; }
+  .machine-steps li { font-size:12px; color:var(--soft); padding:7px 0; border-bottom:1px solid var(--line); padding-left:16px; position:relative; }
+  .machine-steps li:last-child { border-bottom:none; }
+  .machine-steps li::before { content:'→'; position:absolute; left:0; color:var(--orange); font-family:'DM Mono',monospace; font-size:10px; top:9px; }
+  .machine-steps li.gold::before  { color:var(--gold); }
+  .machine-steps li.green::before { color:var(--green); }
+  .machine-steps li.teal::before  { color:var(--teal); }
+
+  /* ── CALLOUT ── */
+  .callout { background:linear-gradient(135deg,rgba(224,123,57,0.09),rgba(224,123,57,0.02)); border:1px solid rgba(224,123,57,0.22); border-radius:10px; padding:36px 40px; margin-bottom:24px; }
+  .callout-eye { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--orange); text-transform:uppercase; margin-bottom:12px; }
+  .callout h3 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--white); margin-bottom:12px; }
+  .callout p { font-size:13px; color:var(--muted); line-height:1.8; max-width:660px; }
+
+  /* ── PILLARS ── */
+  .pillar { border-radius:10px; padding:28px; text-align:center; border:1px solid var(--line); background:rgba(255,255,255,0.02); }
+  .pillar-icon { font-size:28px; margin-bottom:14px; display:block; }
+  .pillar-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:8px; }
+  .pillar-desc { font-size:12px; color:var(--muted); line-height:1.7; }
+  .pillar-who  { font-family:'DM Mono',monospace; font-size:9px; margin-top:14px; padding:5px 12px; border-radius:3px; display:inline-block; letter-spacing:0.1em; }
+  .pillar.orange .pillar-name { color:var(--orange2); }
+  .pillar.gold   .pillar-name { color:var(--gold2); }
+  .pillar.teal   .pillar-name { color:#5eead4; }
+  .pillar.orange .pillar-who { background:rgba(224,123,57,0.08); color:var(--orange); border:1px solid rgba(224,123,57,0.2); }
+  .pillar.gold   .pillar-who { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .pillar.teal   .pillar-who { background:rgba(45,212,191,0.08); color:var(--teal); border:1px solid rgba(45,212,191,0.2); }
+
+  /* ── ADVANTAGE TABLE ── */
+  .adv-row { display:grid; grid-template-columns:1fr 130px 1fr; gap:16px; align-items:start; padding:16px 0; border-bottom:1px solid var(--line); }
+  .adv-row:last-child { border-bottom:none; }
+  .adv-typical  { font-size:12px; color:var(--muted); text-align:right; line-height:1.5; }
+  .adv-category { font-family:'DM Mono',monospace; font-size:8px; letter-spacing:0.1em; text-transform:uppercase; text-align:center; padding:6px 10px; border-radius:4px; background:rgba(224,123,57,0.08); color:var(--orange); border:1px solid rgba(224,123,57,0.2); }
+  .adv-possible { font-size:12px; color:var(--cream); line-height:1.5; }
+
+  /* ── SENTIMENT BARS ── */
+  .sent-row { display:flex; align-items:center; gap:14px; margin-bottom:14px; }
+  .sent-label { font-size:12px; color:var(--soft); flex:1; }
+  .sent-track { width:100px; height:4px; background:rgba(255,255,255,0.05); border-radius:2px; overflow:hidden; flex-shrink:0; }
+  .sent-fill  { height:100%; background:linear-gradient(90deg,var(--orange),var(--orange2)); border-radius:2px; width:0; transition:width 1.4s ease 0.6s; }
+  .sent-pct   { font-family:'DM Mono',monospace; font-size:11px; color:var(--orange2); width:30px; text-align:right; flex-shrink:0; }
+
+  /* ── DISCLAIMER ── */
+  .disclaimer { background:rgba(201,168,76,0.05); border:1px solid rgba(201,168,76,0.18); border-radius:10px; padding:32px 36px; margin-bottom:48px; }
+  .disclaimer-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .disclaimer p { font-size:12px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .disclaimer p:last-child { margin-bottom:0; }
+  .disclaimer strong { color:var(--cream); font-weight:500; }
+
+  /* ── FOOTER ── */
+  .footer { text-align:center; padding-top:32px; border-top:1px solid var(--line); opacity:0; animation:rise 0.6s ease forwards 1.2s; }
+  .footer p { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .section:nth-child(1){animation-delay:0.25s} .section:nth-child(2){animation-delay:0.35s}
+  .section:nth-child(3){animation-delay:0.45s} .section:nth-child(4){animation-delay:0.50s}
+  .section:nth-child(5){animation-delay:0.55s} .section:nth-child(6){animation-delay:0.60s}
+  .section:nth-child(7){animation-delay:0.65s} .section:nth-child(8){animation-delay:0.70s}
+
+  @media(max-width:720px){
+    .wrap{padding:48px 24px;}
+    .facts-row,.two-col,.three-col{grid-template-columns:1fr 1fr;}
+    .adv-row{grid-template-columns:1fr; .adv-typical{text-align:left;}}
+    .fact:first-child{border-radius:8px 8px 0 0;}
+    .fact:last-child{border-radius:0 0 8px 8px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <!-- LABEL -->
+  <div class="doc-label">
+    <div class="pip"></div>
+    <span>Operations Vision · Strategic Mock-Up · Conceptual · Friday Meeting</span>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eye">Uber Realty LLC · Okaloosa County, Florida</div>
+    <h1 class="cover-title">
+      A Strategic Operations Vision<br>
+      <em>for Jim Whatley</em>
+    </h1>
+    <p class="cover-body">
+      Jim has built something genuinely rare — a lean, owner-operated brokerage with an 18-year track record, a disruptive commission model, and a reputation for personal service that the big teams can't replicate. This document explores what could happen if that foundation were supercharged with data intelligence, AI automation, and a dedicated operations layer.
+    </p>
+    <div class="cover-chips">
+      <span class="chip">Lead Intelligence</span>
+      <span class="chip">Listing Systems</span>
+      <span class="chip">Transaction Automation</span>
+      <span class="chip">Market Analysis</span>
+      <span class="chip gold">AI Automation</span>
+      <span class="chip gold">Absentee Owner Data</span>
+      <span class="chip gold">Back Office Support</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1: WHO JIM IS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">01</span><div class="d-line"></div><span class="d-tag">Who Jim Whatley Is</span></div>
+    <h2>18 Years. 1%. <em>No Compromise.</em></h2>
+    <p class="section-lead">Before exploring what technology could add, it's worth understanding what Jim has already built — on his own terms, with a model that most agents said couldn't work. He proved them wrong for nearly two decades.</p>
+
+    <div class="facts-row">
+      <div class="fact">
+        <div class="fact-val">19 yrs</div>
+        <div class="fact-lbl">Uber Realty in business · Founded 2007</div>
+        <div class="fact-src">Confirmed · FL Div. of Corps</div>
+      </div>
+      <div class="fact">
+        <div class="fact-val">1–2%</div>
+        <div class="fact-lbl">Listing commission · Never charged 6%</div>
+        <div class="fact-src">Confirmed · Yelp · Website</div>
+      </div>
+      <div class="fact">
+        <div class="fact-val">4.9★</div>
+        <div class="fact-lbl">Google reviews · 60 reviews · 5/5 Zillow</div>
+        <div class="fact-src">Confirmed · Google · Zillow</div>
+      </div>
+      <div class="fact">
+        <div class="fact-val">A+</div>
+        <div class="fact-lbl">BBB Rating · Accredited · NW Florida</div>
+        <div class="fact-src">Confirmed · BBB</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="pt">Publicly Observable Business Profile</div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">License & Market Coverage</div>
+          <div class="dr-sub">FL Broker #BK3174026 · Niceville, Shalimar, Fort Walton Beach · Okaloosa County</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Business Model</div>
+          <div class="dr-sub">Owner-operated · No team handoffs · Jim handles every client personally · 1% or 2% plan</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Specialty — Estate & Inherited Properties</div>
+          <div class="dr-sub">Website explicitly lists estate sales as a core specialty — high-value distressed niche</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Market Intelligence Output</div>
+          <div class="dr-sub">Publishes MLS-based market reports — Jan 2026 new construction report for FWB & Niceville</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Estimated Transactions — 19 Years</div>
+          <div class="dr-sub">"Sold hundreds of homes" — self-reported with wife Donna · Not independently verified</div>
+        </div>
+        <span class="badge b-estimated">Estimated</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">LinkedIn Following</div>
+          <div class="dr-sub">840+ followers · Active content publisher · Market commentary and seller strategy posts</div>
+        </div>
+        <span class="badge b-confirmed">Confirmed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2: THE UNIQUE ANGLE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">02</span><div class="d-line"></div><span class="d-tag">What Makes Jim Different</span></div>
+    <h2>The Disruptive Model <em>That Actually Works</em></h2>
+    <p class="section-lead">Jim's business is built on a fundamentally different value proposition than every traditional brokerage in Okaloosa County. That creates a specific set of strengths — and a specific set of opportunities that data intelligence could amplify dramatically.</p>
+
+    <div class="callout">
+      <div class="callout-eye">The Core Insight</div>
+      <h3>Jim's competitive advantage is math. We can make the math louder.</h3>
+      <p>On a $450,000 home — the Okaloosa County median — a 6% commission costs the seller $27,000. Jim's 2% plan costs $9,000. That's an $18,000 difference. Most sellers don't know this until someone shows it to them clearly. A data-driven outreach system targeting the right homeowners — at the right moment — could put that number in front of thousands of potential clients who are currently paying too much without realizing it.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="pt">Jim's Publicly Stated Strengths</div>
+        <div class="sent-row"><span class="sent-label">Responsiveness — answers his phone</span><div class="sent-track"><div class="sent-fill" data-w="96"></div></div><span class="sent-pct">~96%</span></div>
+        <div class="sent-row"><span class="sent-label">Knowledge of local market</span><div class="sent-track"><div class="sent-fill" data-w="92"></div></div><span class="sent-pct">~92%</span></div>
+        <div class="sent-row"><span class="sent-label">Saves clients money</span><div class="sent-track"><div class="sent-fill" data-w="90"></div></div><span class="sent-pct">~90%</span></div>
+        <div class="sent-row"><span class="sent-label">Sells homes quickly in hard markets</span><div class="sent-track"><div class="sent-fill" data-w="85"></div></div><span class="sent-pct">~85%</span></div>
+        <div class="sent-row"><span class="sent-label">Personal — not a trainee or assistant</span><div class="sent-track"><div class="sent-fill" data-w="88"></div></div><span class="sent-pct">~88%</span></div>
+        <div class="sent-row"><span class="sent-label">Problem solver in complex situations</span><div class="sent-track"><div class="sent-fill" data-w="80"></div></div><span class="sent-pct">~80%</span></div>
+        <p style="font-size:10px;color:var(--muted);margin-top:14px;font-family:'DM Mono',monospace">* Qualitative estimates from public reviews — not a formal analysis</p>
+      </div>
+
+      <div class="panel">
+        <div class="pt">The Opportunity Jim May Be Missing</div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">28,112 Absentee Owners — Right Now</div>
+            <div class="dr-sub">Okaloosa County 2025 tax roll · Already identified · Scored · Ready to contact</div>
+          </div>
+          <span class="badge b-now">Built</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Estate & Heir Properties</div>
+            <div class="dr-sub">329 flagged in county data — Jim's stated specialty · These leads have no agent yet</div>
+          </div>
+          <span class="badge b-now">Built</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Pre-Foreclosure Monitoring</div>
+            <div class="dr-sub">Weekly lis pendens watch · High-equity distressed sellers · Before they reach the MLS</div>
+          </div>
+          <span class="badge b-concept">Buildable</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Commission Savings Calculator Mailer</div>
+            <div class="dr-sub">Personalized letter to each lead showing their exact savings with Jim vs. 6% agent</div>
+          </div>
+          <span class="badge b-concept">Buildable</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Sphere Re-Engagement System</div>
+            <div class="dr-sub">19 years of past clients · Anniversary triggers · Equity alerts · Warm outreach</div>
+          </div>
+          <span class="badge b-concept">Buildable</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3: LEAD INTELLIGENCE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">03</span><div class="d-line"></div><span class="d-tag">Lead Intelligence System</span></div>
+    <h2>28,112 Motivated Sellers. <em>Already Identified.</em></h2>
+    <p class="section-lead">We've already built this for Okaloosa County. The absentee owner database exists. It's scored. It's ranked. The question is just putting it in front of the right agent — one who can actually serve those sellers better than anyone else in the market.</p>
+
+    <div class="machine orange">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🎯</span>
+          <span class="machine-name">The Okaloosa Absentee Owner System</span>
+        </div>
+        <span class="machine-status ms-now">Already Built</span>
+      </div>
+      <p class="machine-desc">Using the Florida Department of Revenue's 2025 NAL Tax Roll — public data — we've already identified 28,112 Okaloosa County property owners whose mailing address differs from their property address. Every record is scored by likelihood to sell. The HOT tier alone has 1,236 records. Jim's 1–2% commission model is a compelling reason for every one of them to call him instead of a 6% agent.</p>
+      <ul class="machine-steps">
+        <li>28,112 absentee owner records — names, property addresses, mailing addresses, property values</li>
+        <li>Lead scoring system — 100-point model · 1,236 HOT leads · 11,113 WARM leads</li>
+        <li>Broken down by city — Destin 9,317 · Fort Walton Beach 8,751 · Crestview 4,466</li>
+        <li>329 estate/heir situations flagged — Jim's stated specialty · Highest motivation to sell</li>
+        <li>Commission savings calculator — show each lead their exact dollar savings with Jim vs. 6%</li>
+      </ul>
+    </div>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏚</span>
+          <span class="machine-name">The Distressed Property Monitor</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Okaloosa County Clerk of Courts publishes lis pendens filings weekly — the formal start of foreclosure. Cross-referencing these against high-equity properties in our existing database surfaces the most motivated sellers in the county. Jim's estate sale specialty makes him the perfect agent for these conversations.</p>
+      <ul class="machine-steps">
+        <li class="gold">Weekly lis pendens pull · New filings only · Cross-referenced against our absentee owner data</li>
+        <li class="gold">Flag properties with estimated equity over $75K — real money at stake for the seller</li>
+        <li class="gold">Generate a brief weekly alert — who they are, property value, equity estimate, how to reach them</li>
+        <li class="gold">Jim's pitch: "You have equity to protect. Let's sell before the bank takes it — at 2%, not 6%."</li>
+      </ul>
+    </div>
+
+    <div class="machine teal">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">💰</span>
+          <span class="machine-name">The Commission Savings Mailer</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Jim's biggest competitive advantage is financial — and most homeowners don't know what they're leaving on the table. A personalized mailer showing each absentee owner their exact commission savings could be the most effective direct mail campaign in Okaloosa County history.</p>
+      <ul class="machine-steps">
+        <li class="teal">Pull property value from tax roll for each lead</li>
+        <li class="teal">Calculate 6% traditional commission vs. Jim's 2% — show the exact dollar difference</li>
+        <li class="teal">Personalized letter: "Your property at [address] is worth approximately $[value]. At 6%, you'd pay $[X]. With Uber Realty, you pay $[Y]. That's $[savings] you keep."</li>
+        <li class="teal">Output as print-ready mail merge — ready for Jim's mail vendor · Targeted to HOT leads first</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4: LISTING MACHINE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">04</span><div class="d-line"></div><span class="d-tag">The Listing Machine</span></div>
+    <h2>Every Appointment. <em>Already Prepared.</em></h2>
+    <p class="section-lead">Jim runs a lean, one-man operation. Every hour he spends on preparation, paperwork, or administrative tasks is an hour he's not talking to a client. The listing machine concept is designed specifically for how Jim operates — fast, personal, and data-driven.</p>
+
+    <div class="machine orange">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📋</span>
+          <span class="machine-name">Pre-Listing Intelligence Package</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">The moment Jim confirms a listing appointment, a system could automatically pull everything he needs — property record, ownership history, comparable sales, neighborhood trends — and deliver a one-page brief to his phone before he walks in the door.</p>
+      <ul class="machine-steps">
+        <li>Pull Okaloosa County property record — assessed value, year built, square footage, ownership history</li>
+        <li>Run automated comp analysis — recent sales within 0.5 miles, last 90 days, price per sqft</li>
+        <li>Calculate estimated equity — current value minus estimated remaining mortgage</li>
+        <li>Flag any lis pendens, tax delinquency, or other public filings on the property</li>
+        <li>One-page brief — delivered to Jim's email before the appointment</li>
+      </ul>
+    </div>
+
+    <div class="machine green">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📊</span>
+          <span class="machine-name">Personalized Listing Presentation Builder</span>
+        </div>
+        <span class="machine-status ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Jim already publishes sophisticated MLS market reports. A presentation builder could take that same analytical intelligence and turn it into a customized, property-specific presentation — automatically — for every single listing appointment.</p>
+      <ul class="machine-steps">
+        <li class="green">Auto-populate seller name, property address, and neighborhood into Uber Realty template</li>
+        <li class="green">Insert local comps, days-on-market trends, and price-per-sqft data</li>
+        <li class="green">Show the commission savings calculation — front and center — with their specific numbers</li>
+        <li class="green">Output as branded PDF · Jim walks in with something nobody else brings</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 5: TRANSACTION SYSTEMS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">05</span><div class="d-line"></div><span class="d-tag">Transaction Systems</span></div>
+    <h2>Under Contract to Close. <em>Nothing Missed.</em></h2>
+    <p class="section-lead">Jim personally handles every transaction — which means every deadline, every document, every follow-up lives in his head. A lightweight system that tracks the timeline and handles the routine work frees Jim to focus on what only he can do: talking to clients and solving problems.</p>
+
+    <div class="two-col">
+      <div class="machine orange" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">⏱</span>
+            <span class="machine-name">Transaction Timeline Tracker</span>
+          </div>
+          <span class="machine-status ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">Automatically maps every critical date the moment a contract is executed. Sends Jim proactive alerts before each deadline — inspection, financing, appraisal, walk-through, closing.</p>
+        <ul class="machine-steps">
+          <li>Extract all key dates from executed contract</li>
+          <li>Build a countdown to every milestone</li>
+          <li>Alert 5 days, 2 days, and day-of each deadline</li>
+          <li>Daily one-line status: "3 active deals — 1 deadline in 2 days"</li>
+        </ul>
+      </div>
+
+      <div class="machine gold" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📄</span>
+            <span class="machine-name">Pin-to-Close Generator</span>
+          </div>
+          <span class="machine-status ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">At closing, a clean branded summary document — automatically generated from transaction data — recapping the entire deal. Professional, consistent, effortless.</p>
+        <ul class="machine-steps">
+          <li class="gold">Pull transaction data automatically</li>
+          <li class="gold">Generate formatted closing summary</li>
+          <li class="gold">Include all parties, dates, final financials</li>
+          <li class="gold">Output as Uber Realty branded PDF</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: THE PARTNERSHIP -->
+  <div class="section">
+    <div class="divider"><span class="d-num">06</span><div class="d-line"></div><span class="d-tag">The Partnership Model</span></div>
+    <h2>Three People. <em>Everything Covered.</em></h2>
+    <p class="section-lead">Jim runs lean by design. This isn't about replacing that — it's about giving him the capabilities of a full operations team without the overhead. Three people, the right tools, and a clear division of roles.</p>
+
+    <div class="three-col">
+      <div class="pillar orange">
+        <span class="pillar-icon">🧠</span>
+        <div class="pillar-name">Strategy & Systems</div>
+        <p class="pillar-desc">Designs the intelligence architecture. Builds lead systems, scoring models, and outreach workflows. Connects the data to Jim's business strategy and competitive model.</p>
+        <span class="pillar-who">Ryan — Operations Lead</span>
+      </div>
+      <div class="pillar gold">
+        <span class="pillar-icon">⚡</span>
+        <div class="pillar-name">Technical Build</div>
+        <p class="pillar-desc">Writes the code. Builds the data pipelines, automation scripts, and integrations. Turns the strategy into working systems. Fast, reliable, no overhead.</p>
+        <span class="pillar-who">Junior — Technical Lead</span>
+      </div>
+      <div class="pillar teal">
+        <span class="pillar-icon">🤖</span>
+        <div class="pillar-name">AI Intelligence Layer</div>
+        <p class="pillar-desc">Analyzes data, drafts documents, scores leads, generates market reports, and surfaces insights — in real time, on demand, in Jim's voice.</p>
+        <span class="pillar-who">Claude — AI Engine</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-eye">The Core Promise</div>
+      <h3>Jim keeps what makes him great. We handle what slows him down.</h3>
+      <p>Jim's competitive advantage is being personal, fast, and financially smarter than the competition. Nothing we build changes that. What it does is make sure Jim never misses a motivated seller, never walks into an appointment unprepared, never lets a transaction deadline slip — and can reach thousands of potential clients with a message that resonates: <em style="color:var(--cream)">you deserve to keep more of your equity.</em></p>
+    </div>
+  </div>
+
+  <!-- SECTION 7: COMPETITIVE ADVANTAGE -->
+  <div class="section">
+    <div class="divider"><span class="d-num">07</span><div class="d-line"></div><span class="d-tag">Competitive Advantage</span></div>
+    <h2>What Jim Would Have <em>That Nobody Else Does</em></h2>
+
+    <div class="panel">
+      <div class="pt">Typical Okaloosa Agent vs. Jim + This System — Hypothetical</div>
+      <div style="display:grid;grid-template-columns:1fr 130px 1fr;gap:8px;padding-bottom:12px;margin-bottom:4px;border-bottom:1px solid var(--line)">
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--muted);text-align:right;letter-spacing:0.1em">TYPICAL AGENT TODAY</span>
+        <span></span>
+        <span style="font-family:'DM Mono',monospace;font-size:8px;color:var(--orange);letter-spacing:0.1em">JIM + THIS SYSTEM</span>
+      </div>
+      <div class="adv-row">
+        <div class="adv-typical">Waits for sellers to call them</div>
+        <div class="adv-category">Lead Gen</div>
+        <div class="adv-possible">Could contact 28,112 motivated Okaloosa sellers by name — before they list anywhere</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-typical">Generic commission pitch at the appointment</div>
+        <div class="adv-category">Listing Appt</div>
+        <div class="adv-possible">Could walk in with a personalized savings calculation showing the seller their exact dollar difference</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-typical">Learns about estate sales when they hit the MLS</div>
+        <div class="adv-category">Specialty</div>
+        <div class="adv-possible">Could be alerted to estate and heir situations directly from public records — before any agent is involved</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-typical">Tracks transaction dates manually or by memory</div>
+        <div class="adv-category">Operations</div>
+        <div class="adv-possible">Could have every deadline on every active deal tracked and flagged automatically — nothing slips</div>
+      </div>
+      <div class="adv-row">
+        <div class="adv-typical">Market reports take hours to compile</div>
+        <div class="adv-category">Intelligence</div>
+        <div class="adv-possible">Jim already publishes MLS reports — a system could automate data collection and format it instantly</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="disclaimer-title">Important Notice</div>
+    <p><strong>This is a conceptual strategic vision document.</strong> It is not a finished platform or a guarantee of outcomes. The absentee owner database is real and built — all other systems described are concepts that would require planning and implementation.</p>
+    <p><strong>The 28,112 absentee owner records</strong> were built from the Florida Department of Revenue's 2025 NAL Tax Roll — 100% public data. All other estimates are clearly labeled and should not be treated as verified facts.</p>
+    <p><strong>The intent of this document</strong> is to show Jim a clear picture of what's possible — and to open a conversation about what we could build together, starting with what already exists.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Strategic Operations Vision · Jim Whatley · Uber Realty LLC · Fort Walton Beach, Florida</p>
+    <p>Prepared by Ryan · AI Engine: Claude · Technical: Junior · Friday Meeting · May 2026</p>
+  </div>
+
+</div>
+<script>
+  window.addEventListener('load', () => {
+    setTimeout(() => {
+      document.querySelectorAll('.sent-fill').forEach(el => {
+        el.style.width = (el.dataset.w || 0) + '%';
+      });
+    }, 600);
+  });
+</script>
+</body>
+</html>
