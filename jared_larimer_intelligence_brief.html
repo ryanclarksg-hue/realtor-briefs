@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jared Larimer — Deal Intelligence Vision · JNL Solutions</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --ink:    #07101c;
+    --deep:   #0b1828;
+    --panel:  #0f2035;
+    --green:  #27ae60;
+    --green2: #2ecc71;
+    --gold:   #c9a84c;
+    --gold2:  #e8c97a;
+    --cream:  #f0ebe0;
+    --muted:  #7a8fa8;
+    --soft:   #b8c8d8;
+    --white:  #ffffff;
+    --red:    #e74c3c;
+    --red2:   #ff6b6b;
+    --orange: #e67e22;
+    --purple: #9b59b6;
+    --line:   rgba(255,255,255,0.06);
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { background:var(--ink); color:var(--soft); font-family:'DM Sans',sans-serif; font-weight:300; line-height:1.7; }
+  body::before {
+    content:''; position:fixed; inset:0;
+    background:
+      radial-gradient(ellipse 60% 40% at 0% 0%, rgba(39,174,96,0.07) 0%, transparent 55%),
+      radial-gradient(ellipse 40% 30% at 100% 100%, rgba(231,76,60,0.05) 0%, transparent 55%);
+    pointer-events:none; z-index:0;
+  }
+  .wrap { max-width:980px; margin:0 auto; padding:80px 48px; position:relative; z-index:1; }
+
+  /* LABEL */
+  .doc-label { display:inline-flex; align-items:center; gap:10px; background:rgba(39,174,96,0.08); border:1px solid rgba(46,204,113,0.25); border-radius:4px; padding:7px 16px; margin-bottom:72px; opacity:0; animation:rise 0.5s ease forwards 0.1s; }
+  .pip { width:6px; height:6px; border-radius:50%; background:var(--green2); animation:breathe 3s ease infinite; }
+  @keyframes breathe { 0%,100%{opacity:1}50%{opacity:0.25} }
+  .doc-label span { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.2em; color:var(--green2); text-transform:uppercase; }
+
+  /* COVER */
+  .cover { margin-bottom:96px; padding-bottom:72px; border-bottom:1px solid var(--line); opacity:0; animation:rise 0.9s ease forwards 0.15s; }
+  .cover-eye { font-family:'DM Mono',monospace; font-size:10px; letter-spacing:0.25em; color:var(--green2); text-transform:uppercase; margin-bottom:20px; }
+  .cover-title { font-family:'Cormorant Garamond',serif; font-size:clamp(38px,5.5vw,68px); font-weight:600; color:var(--white); line-height:1.05; margin-bottom:24px; }
+  .cover-title em { color:var(--green2); font-style:italic; }
+  .cover-body { font-size:15px; color:var(--muted); max-width:580px; line-height:1.85; margin-bottom:44px; }
+  .cover-chips { display:flex; gap:12px; flex-wrap:wrap; }
+  .chip { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.15em; text-transform:uppercase; padding:6px 14px; border-radius:4px; }
+  .chip.green  { border:1px solid rgba(46,204,113,0.2); color:var(--green2); background:rgba(39,174,96,0.05); }
+  .chip.red    { border:1px solid rgba(231,76,60,0.25); color:var(--red2); background:rgba(231,76,60,0.06); }
+  .chip.gold   { border:1px solid rgba(201,168,76,0.2); color:var(--gold); background:rgba(201,168,76,0.05); }
+  .chip.orange { border:1px solid rgba(230,126,34,0.25); color:var(--orange); background:rgba(230,126,34,0.06); }
+
+  /* DIVIDER */
+  .divider { display:flex; align-items:center; gap:16px; margin-bottom:32px; }
+  .d-num  { font-family:'DM Mono',monospace; font-size:9px; color:rgba(46,204,113,0.5); letter-spacing:0.15em; }
+  .d-line { flex:1; height:1px; background:var(--line); }
+  .d-tag  { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--green2); text-transform:uppercase; white-space:nowrap; }
+
+  /* SECTION */
+  .section { margin-bottom:88px; opacity:0; animation:rise 0.7s ease forwards; }
+  h2 { font-family:'Cormorant Garamond',serif; font-size:clamp(26px,3.2vw,40px); font-weight:600; color:var(--white); line-height:1.15; margin-bottom:14px; }
+  h2 em { color:var(--green2); font-style:italic; }
+  .section-lead { font-size:14px; color:var(--muted); max-width:640px; line-height:1.85; margin-bottom:40px; }
+
+  /* PANELS */
+  .panel { background:var(--panel); border-radius:10px; padding:32px; border:1px solid var(--line); margin-bottom:20px; }
+  .pt { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; color:var(--green2); margin-bottom:22px; padding-bottom:12px; border-bottom:1px solid var(--line); }
+  .pt.red    { color:var(--red2); }
+  .pt.gold   { color:var(--gold); }
+  .pt.orange { color:var(--orange); }
+
+  /* GRIDS */
+  .two-col   { display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-bottom:20px; }
+  .three-col { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:20px; }
+
+  /* FACTS */
+  .facts-row { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; margin-bottom:48px; }
+  .fact { background:var(--panel); padding:24px 20px; position:relative; overflow:hidden; }
+  .fact:first-child { border-radius:8px 0 0 8px; }
+  .fact:last-child  { border-radius:0 8px 8px 0; }
+  .fact::after { content:''; position:absolute; bottom:0; left:0; right:0; height:2px; }
+  .fact.green::after  { background:linear-gradient(90deg,var(--green),var(--green2)); }
+  .fact.red::after    { background:linear-gradient(90deg,var(--red),var(--red2)); }
+  .fact.gold::after   { background:linear-gradient(90deg,var(--gold),var(--gold2)); }
+  .fact.orange::after { background:linear-gradient(90deg,var(--orange),#f39c12); }
+  .fact-val { font-family:'Cormorant Garamond',serif; font-size:28px; font-weight:700; line-height:1; margin-bottom:6px; }
+  .fact.green  .fact-val { color:var(--green2); }
+  .fact.red    .fact-val { color:var(--red2); }
+  .fact.gold   .fact-val { color:var(--gold2); }
+  .fact.orange .fact-val { color:var(--orange); }
+  .fact-lbl { font-size:11px; color:var(--muted); line-height:1.4; }
+  .fact-src { font-family:'DM Mono',monospace; font-size:8px; margin-top:8px; text-transform:uppercase; letter-spacing:0.1em; color:rgba(46,204,113,0.35); }
+
+  /* DATA ROWS */
+  .dr { display:flex; justify-content:space-between; align-items:flex-start; gap:20px; padding:13px 0; border-bottom:1px solid var(--line); }
+  .dr:last-child { border-bottom:none; }
+  .dr-name { font-size:13px; color:var(--cream); margin-bottom:3px; }
+  .dr-sub  { font-size:11px; color:var(--muted); line-height:1.5; }
+  .dr-right { flex-shrink:0; text-align:right; }
+  .badge { display:inline-block; font-family:'DM Mono',monospace; font-size:8px; padding:2px 7px; border-radius:3px; letter-spacing:0.08em; text-transform:uppercase; white-space:nowrap; }
+  .b-green  { background:rgba(46,204,113,0.1); color:var(--green2); border:1px solid rgba(46,204,113,0.2); }
+  .b-red    { background:rgba(231,76,60,0.1); color:var(--red2); border:1px solid rgba(231,76,60,0.2); }
+  .b-gold   { background:rgba(201,168,76,0.1); color:var(--gold2); border:1px solid rgba(201,168,76,0.2); }
+  .b-now    { background:rgba(46,204,113,0.15); color:var(--green2); border:1px solid rgba(46,204,113,0.3); font-weight:600; }
+  .b-concept{ background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+
+  /* MACHINE CARDS */
+  .machine { border-radius:10px; padding:28px; border:1px solid var(--line); background:rgba(255,255,255,0.02); position:relative; overflow:hidden; margin-bottom:16px; }
+  .machine::before { content:''; position:absolute; top:0; left:0; bottom:0; width:3px; }
+  .machine.green::before  { background:linear-gradient(180deg,var(--green),var(--green2)); }
+  .machine.red::before    { background:linear-gradient(180deg,var(--red),var(--red2)); }
+  .machine.gold::before   { background:linear-gradient(180deg,var(--gold),var(--gold2)); }
+  .machine.orange::before { background:linear-gradient(180deg,var(--orange),#f39c12); }
+  .machine.purple::before { background:linear-gradient(180deg,var(--purple),#c39bd3); }
+  .machine-header { display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:14px; }
+  .machine-icon-name { display:flex; align-items:center; gap:12px; }
+  .machine-icon { font-size:20px; }
+  .machine-name { font-family:'Cormorant Garamond',serif; font-size:18px; font-weight:600; color:var(--white); }
+  .ms { font-family:'DM Mono',monospace; font-size:8px; padding:3px 10px; border-radius:3px; letter-spacing:0.1em; flex-shrink:0; }
+  .ms-now     { background:rgba(46,204,113,0.12); color:var(--green2); border:1px solid rgba(46,204,113,0.3); }
+  .ms-concept { background:rgba(122,143,168,0.08); color:var(--muted); border:1px dashed rgba(122,143,168,0.2); }
+  .ms-hot     { background:rgba(231,76,60,0.12); color:var(--red2); border:1px solid rgba(231,76,60,0.3); }
+  .machine-desc { font-size:13px; color:var(--muted); line-height:1.7; margin-bottom:16px; }
+  .machine-steps { list-style:none; }
+  .machine-steps li { font-size:12px; color:var(--soft); padding:7px 0; border-bottom:1px solid var(--line); padding-left:16px; position:relative; }
+  .machine-steps li:last-child { border-bottom:none; }
+  .machine-steps li::before { content:'→'; position:absolute; left:0; color:var(--green2); font-family:'DM Mono',monospace; font-size:10px; top:9px; }
+  .machine-steps li.red::before    { color:var(--red2); }
+  .machine-steps li.gold::before   { color:var(--gold); }
+  .machine-steps li.orange::before { color:var(--orange); }
+
+  /* CALLOUT */
+  .callout { border-radius:10px; padding:36px 40px; margin-bottom:24px; }
+  .callout.green { background:linear-gradient(135deg,rgba(39,174,96,0.1),rgba(39,174,96,0.02)); border:1px solid rgba(46,204,113,0.22); }
+  .callout.red   { background:linear-gradient(135deg,rgba(231,76,60,0.1),rgba(231,76,60,0.02)); border:1px solid rgba(231,76,60,0.25); }
+  .callout.gold  { background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); }
+  .callout-eye { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; text-transform:uppercase; margin-bottom:12px; }
+  .callout.green .callout-eye { color:var(--green2); }
+  .callout.red   .callout-eye { color:var(--red2); }
+  .callout.gold  .callout-eye { color:var(--gold); }
+  .callout h3 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--white); margin-bottom:12px; }
+  .callout p { font-size:13px; color:var(--muted); line-height:1.8; max-width:660px; }
+
+  /* PILLARS */
+  .pillar { border-radius:10px; padding:28px; text-align:center; border:1px solid var(--line); background:rgba(255,255,255,0.02); }
+  .pillar-icon { font-size:28px; margin-bottom:14px; display:block; }
+  .pillar-name { font-family:'Cormorant Garamond',serif; font-size:20px; font-weight:600; margin-bottom:8px; }
+  .pillar-desc { font-size:12px; color:var(--muted); line-height:1.7; }
+  .pillar-who  { font-family:'DM Mono',monospace; font-size:9px; margin-top:14px; padding:5px 12px; border-radius:3px; display:inline-block; letter-spacing:0.1em; }
+  .pillar.green  .pillar-name { color:var(--green2); }
+  .pillar.gold   .pillar-name { color:var(--gold2); }
+  .pillar.teal   .pillar-name { color:#5eead4; }
+  .pillar.green  .pillar-who  { background:rgba(46,204,113,0.08); color:var(--green2); border:1px solid rgba(46,204,113,0.2); }
+  .pillar.gold   .pillar-who  { background:rgba(201,168,76,0.08); color:var(--gold); border:1px solid rgba(201,168,76,0.2); }
+  .pillar.teal   .pillar-who  { background:rgba(45,212,191,0.08); color:#2dd4bf; border:1px solid rgba(45,212,191,0.2); }
+
+  /* RYAN CARD */
+  .ryan-card { background:linear-gradient(135deg,rgba(201,168,76,0.1),rgba(201,168,76,0.02)); border:1px solid rgba(201,168,76,0.25); border-radius:10px; padding:32px 36px; margin-bottom:20px; }
+  .ryan-card-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .ryan-card p { font-size:13px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .ryan-card p:last-child { margin-bottom:0; }
+  .ryan-card strong { color:var(--cream); font-weight:500; }
+
+  /* DISCLAIMER */
+  .disclaimer { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.15); border-radius:10px; padding:32px 36px; margin-bottom:48px; }
+  .disclaimer-title { font-family:'DM Mono',monospace; font-size:9px; letter-spacing:0.2em; color:var(--gold); text-transform:uppercase; margin-bottom:16px; }
+  .disclaimer p { font-size:12px; color:var(--muted); line-height:1.8; margin-bottom:8px; }
+  .disclaimer p:last-child { margin-bottom:0; }
+  .disclaimer strong { color:var(--cream); font-weight:500; }
+
+  /* FOOTER */
+  .footer { text-align:center; padding-top:32px; border-top:1px solid var(--line); opacity:0; animation:rise 0.6s ease forwards 1.2s; }
+  .footer p { font-family:'DM Mono',monospace; font-size:10px; color:var(--muted); letter-spacing:0.08em; margin-bottom:4px; }
+
+  @keyframes rise { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+  .section:nth-child(1){animation-delay:0.25s} .section:nth-child(2){animation-delay:0.35s}
+  .section:nth-child(3){animation-delay:0.45s} .section:nth-child(4){animation-delay:0.50s}
+  .section:nth-child(5){animation-delay:0.55s} .section:nth-child(6){animation-delay:0.60s}
+
+  @media(max-width:720px){
+    .wrap{padding:48px 24px;}
+    .facts-row,.two-col,.three-col{grid-template-columns:1fr 1fr;}
+    .fact:first-child{border-radius:8px 8px 0 0;}
+    .fact:last-child{border-radius:0 0 8px 8px;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="doc-label">
+    <div class="pip"></div>
+    <span>Deal Intelligence Vision · JNL Solutions · Conceptual</span>
+  </div>
+
+  <!-- COVER -->
+  <div class="cover">
+    <div class="cover-eye">JNL Solutions LLC · Fort Walton Beach, Florida · Cash Buyer & Investor</div>
+    <h1 class="cover-title">
+      A Deal Intelligence Vision<br>
+      <em>for Jared Larimer</em>
+    </h1>
+    <p class="cover-body">
+      Jared's business runs on finding the right deals before anyone else does. Pre-foreclosures, distressed owners, estate situations, tired landlords — the harder the situation, the more value JNL Solutions creates. This document explores what becomes possible when public data intelligence, automated deal sourcing, and AI-powered outreach work together to fill his pipeline with motivated sellers — every single month.
+    </p>
+    <div class="cover-chips">
+      <span class="chip red">Pre-Foreclosure Alerts</span>
+      <span class="chip red">Distressed Owner Data</span>
+      <span class="chip green">Deal Pipeline System</span>
+      <span class="chip gold">28,112 Leads Built</span>
+      <span class="chip orange">Multi-Family Targeting</span>
+      <span class="chip green">Automated Outreach</span>
+    </div>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="divider"><span class="d-num">01</span><div class="d-line"></div><span class="d-tag">Who Jared Larimer Is</span></div>
+    <h2>Cash Buyer. Problem Solver. <em>Community Builder.</em></h2>
+    <p class="section-lead">Jared isn't just buying houses — he's solving problems. Divorce, foreclosure, job loss, inherited property, bad tenants — he steps in when traditional real estate can't move fast enough. That mission needs a constant flow of motivated sellers. That's exactly what data intelligence delivers.</p>
+
+    <div class="facts-row">
+      <div class="fact green">
+        <div class="fact-val">7 yrs</div>
+        <div class="fact-lbl">JNL Solutions in business · Founded Oct 2019 · Active LLC</div>
+        <div class="fact-src">Confirmed · FL Div. of Corps</div>
+      </div>
+      <div class="fact red">
+        <div class="fact-val">Cash</div>
+        <div class="fact-lbl">Buys in any condition · Closes in as little as 7 days · No commissions</div>
+        <div class="fact-src">Confirmed · Website</div>
+      </div>
+      <div class="fact orange">
+        <div class="fact-val">Multi</div>
+        <div class="fact-lbl">Buys duplexes, multi-family, up to 60 units · Land too</div>
+        <div class="fact-src">Confirmed · Instagram</div>
+      </div>
+      <div class="fact gold">
+        <div class="fact-val">5.5K+</div>
+        <div class="fact-lbl">Facebook followers · 1.2K Instagram · Active content publisher</div>
+        <div class="fact-src">Confirmed · Social</div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="pt">Publicly Observable Business Profile</div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Business Model</div>
+          <div class="dr-sub">Cash buyer · As-is purchases · No repairs · Closes in 7–14 days · Covers closing costs</div>
+        </div>
+        <span class="badge b-green">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Target Situations</div>
+          <div class="dr-sub">Foreclosure · Divorce · Inherited property · Job loss · Bad condition · Tired landlords · Estate sales</div>
+        </div>
+        <span class="badge b-green">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Property Types</div>
+          <div class="dr-sub">Single family · Duplexes · Multi-family up to 60 units · Land · Condos · Townhomes</div>
+        </div>
+        <span class="badge b-green">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Market Coverage</div>
+          <div class="dr-sub">Fort Walton Beach · Crestview · Niceville · Destin · All of Okaloosa County and surrounding areas</div>
+        </div>
+        <span class="badge b-green">Confirmed</span>
+      </div>
+      <div class="dr">
+        <div>
+          <div class="dr-name">Flip & Renovate Model</div>
+          <div class="dr-sub">Buys distressed → renovates to like-new → resells · Improves neighborhood values · Community focus</div>
+        </div>
+        <span class="badge b-green">Confirmed</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 — THE DATA CONNECTION -->
+  <div class="section">
+    <div class="divider"><span class="d-num">02</span><div class="d-line"></div><span class="d-tag">The Data We Already Built</span></div>
+    <h2>28,112 Motivated Sellers. <em>Already Identified. Already Scored.</em></h2>
+    <p class="section-lead">We've already built the Okaloosa County lead intelligence database from Florida's 2025 public tax roll. Every record is scored by motivation to sell. For a realtor, these are listing appointments. For Jared — these are potential deals he can buy directly.</p>
+
+    <div class="callout green">
+      <div class="callout-eye">The Core Opportunity</div>
+      <h3>Jared's best deals are hiding in plain sight — in public records.</h3>
+      <p>Pre-foreclosure owners, absentee landlords who've owned for 20 years, estate heirs who inherited a house they don't want, LLC-owned properties with out-of-state owners who can't manage them locally — every single one of these is a potential JNL Solutions deal. We've already found 28,112 of them in Okaloosa County alone. The distressed subset — the ones most likely to sell fast and below market — is exactly what Jared needs in his pipeline every month.</p>
+    </div>
+
+    <div class="two-col">
+      <div class="panel">
+        <div class="pt red">Jared's Best Lead Types — Already in Our Data</div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Pre-Foreclosure / Lis Pendens</div>
+            <div class="dr-sub">Active foreclosure filings · Owner needs to sell NOW · Before bank takes it</div>
+          </div>
+          <span class="badge b-red">Hottest Deals</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Estate & Heir Situations</div>
+            <div class="dr-sub">329 flagged in county · Inherited property · No emotional attachment · Want cash fast</div>
+          </div>
+          <span class="badge b-now">329 Found</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Long-Term Absentee Owners</div>
+            <div class="dr-sub">Owned 10–20+ years · Out of state · Tired of managing from a distance · High equity</div>
+          </div>
+          <span class="badge b-now">Built</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">LLC & Corporate Owned</div>
+            <div class="dr-sub">5,309 investor-owned properties · Portfolio sellers · Motivated by numbers not emotion</div>
+          </div>
+          <span class="badge b-now">5,309 Found</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Tax Delinquent Properties</div>
+            <div class="dr-sub">Behind on taxes · Certificate risk · Need to sell before county takes action</div>
+          </div>
+          <span class="badge b-concept">Buildable</span>
+        </div>
+        <div class="dr">
+          <div>
+            <div class="dr-name">Multi-Family Absentee Owners</div>
+            <div class="dr-sub">Tired landlords with 2–10 unit properties · Remote management nightmare · Ready to exit</div>
+          </div>
+          <span class="badge b-now">Tagged</span>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="pt">Deal Scoring — What Makes a JNL Lead HOT</div>
+        <div class="dr">
+          <div><div class="dr-name">Lis Pendens Filed</div><div class="dr-sub">Foreclosure started · Urgent timeline · Seller needs out</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--red2);">+35 pts</div>
+        </div>
+        <div class="dr">
+          <div><div class="dr-name">Out-of-State Owner</div><div class="dr-sub">Can't manage locally · Distance = motivation</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green2);">+20 pts</div>
+        </div>
+        <div class="dr">
+          <div><div class="dr-name">Long-Term Owner 10+ Years</div><div class="dr-sub">Deep equity · More room to negotiate</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--green2);">+25 pts</div>
+        </div>
+        <div class="dr">
+          <div><div class="dr-name">Estate / Heir Situation</div><div class="dr-sub">Inherited · No attachment · Wants cash</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--red2);">+10 pts</div>
+        </div>
+        <div class="dr">
+          <div><div class="dr-name">Tax Delinquent</div><div class="dr-sub">Behind on taxes · Certificate risk</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--red2);">+25 pts</div>
+        </div>
+        <div class="dr">
+          <div><div class="dr-name">Multi-Family Property</div><div class="dr-sub">Jared's stated growth target</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--orange);">+15 pts</div>
+        </div>
+        <div class="dr">
+          <div><div class="dr-name">High Equity ($100K+)</div><div class="dr-sub">Room to make a fair cash offer</div></div>
+          <div style="font-family:'DM Mono',monospace;font-size:12px;color:var(--gold);">+15 pts</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 — THE MACHINES -->
+  <div class="section">
+    <div class="divider"><span class="d-num">03</span><div class="d-line"></div><span class="d-tag">Deal Sourcing Systems</span></div>
+    <h2>A Constant Pipeline of <em>Motivated Sellers</em></h2>
+    <p class="section-lead">The difference between a good month and a great month for Jared is deal flow. The following systems are designed to keep a steady stream of scored, motivated sellers in front of him — automatically — so he's always working the best available opportunities.</p>
+
+    <div class="machine red">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🚨</span>
+          <span class="machine-name">Weekly Pre-Foreclosure Alert System</span>
+        </div>
+        <span class="ms ms-hot">Highest Priority · Buildable</span>
+      </div>
+      <p class="machine-desc">Okaloosa County Clerk of Courts publishes lis pendens filings weekly — the formal start of foreclosure. These are Jared's absolute best leads. The homeowner has a few months before the bank takes everything. A cash buyer who calls them first — with a fair offer and a fast close — is exactly what they need. Every week, a new batch of these hits the public record.</p>
+      <ul class="machine-steps">
+        <li class="red">Pull new Okaloosa County lis pendens filings every Monday morning</li>
+        <li class="red">Cross-reference against our existing database — get owner name, mailing address, property value, equity estimate</li>
+        <li class="red">Score each filing — how much equity, how long owned, absentee or occupied</li>
+        <li class="red">Generate a weekly alert: "3 new pre-foreclosure properties this week — here's who to call first"</li>
+        <li class="red">Draft personalized outreach letter for each — "I can close in 7 days. You keep your equity."</li>
+      </ul>
+    </div>
+
+    <div class="machine green">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🎯</span>
+          <span class="machine-name">Monthly Distressed Seller HOT List</span>
+        </div>
+        <span class="ms ms-now">Data Already Built</span>
+      </div>
+      <p class="machine-desc">Our existing 28,112 record Okaloosa County database is already scored and ranked. Every month, we can deliver Jared the top 50 most motivated potential sellers — filtered specifically for the situations his business was built to solve. Estate heirs, tired landlords, out-of-state owners, tax delinquents.</p>
+      <ul class="machine-steps">
+        <li>Filter the database for Jared's specific deal criteria — distress signals, equity, property type</li>
+        <li>Rank the top 50 by deal score — highest motivation first</li>
+        <li>Include owner name, property address, mailing address, estimated equity, distress type</li>
+        <li>Flag multi-family properties specifically — Jared's stated growth target</li>
+        <li>Refresh monthly — new owners in, closed deals out · Always fresh pipeline</li>
+      </ul>
+    </div>
+
+    <div class="machine orange">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">🏢</span>
+          <span class="machine-name">Multi-Family & Landlord Targeting</span>
+        </div>
+        <span class="ms ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Jared actively posts about buying duplexes and multi-family properties up to 60 units. Our database already tags multi-family absentee owners. A targeted system specifically hunting tired landlords — people managing rentals from out of state — could be his most valuable deal source.</p>
+      <ul class="machine-steps">
+        <li class="orange">Filter database for DOR codes 3 and 8 — multi-family residential properties</li>
+        <li class="orange">Cross-reference with out-of-state owners — remote landlord = highest fatigue</li>
+        <li class="orange">Flag those owned 5+ years with no recent sale activity</li>
+        <li class="orange">Personalized outreach: "Managing rentals from out of state is exhausting. I'll buy them all — cash, as-is."</li>
+      </ul>
+    </div>
+
+    <div class="machine gold">
+      <div class="machine-header">
+        <div class="machine-icon-name">
+          <span class="machine-icon">📬</span>
+          <span class="machine-name">Automated Direct Mail Campaign</span>
+        </div>
+        <span class="ms ms-concept">Concept · Buildable</span>
+      </div>
+      <p class="machine-desc">Jared already does direct mail — it's standard for cash buyers. What we add is intelligence. Instead of blasting generic postcards to random neighborhoods, every mailer is targeted to a scored lead with a personalized message based on their specific situation — pre-foreclosure, inherited, absentee landlord.</p>
+      <ul class="machine-steps">
+        <li class="gold">Pull monthly HOT list · Sort by distress type</li>
+        <li class="gold">Generate situation-specific letter — pre-foreclosure gets different message than estate heir</li>
+        <li class="gold">Include estimated equity: "Your property at [address] may have $[X] in equity. Let's protect it."</li>
+        <li class="gold">Output print-ready mail merge — JNL Solutions branded · Ready for mail vendor</li>
+        <li class="gold">Track which mailer types convert to calls over time · Optimize monthly</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- SECTION 4 — OPERATIONS -->
+  <div class="section">
+    <div class="divider"><span class="d-num">04</span><div class="d-line"></div><span class="d-tag">Deal Operations</span></div>
+    <h2>From First Contact <em>to Closed Deal</em></h2>
+    <p class="section-lead">Jared closes fast — 7 to 14 days is his brand promise. That speed requires clean systems. The following concepts are designed to keep every deal moving and nothing slipping through the cracks.</p>
+
+    <div class="two-col">
+      <div class="machine green" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">⚡</span>
+            <span class="machine-name">Deal Pipeline Tracker</span>
+          </div>
+          <span class="ms ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">Every active deal tracked from first contact to close. Stages, deadlines, action items — all in one view. Nothing falls through the cracks when you're running 5 deals at once.</p>
+        <ul class="machine-steps">
+          <li>Lead → Contacted → Offer Made → Under Contract → Closed</li>
+          <li>Days since last contact flagged automatically</li>
+          <li>Closing deadline countdown on every active deal</li>
+          <li>Daily one-line digest: "2 under contract · 1 offer pending · 8 new leads"</li>
+        </ul>
+      </div>
+
+      <div class="machine red" style="margin-bottom:0">
+        <div class="machine-header">
+          <div class="machine-icon-name">
+            <span class="machine-icon">📊</span>
+            <span class="machine-name">Deal Analyzer</span>
+          </div>
+          <span class="ms ms-concept">Concept</span>
+        </div>
+        <p class="machine-desc" style="margin-bottom:12px">When Jared gets a new lead, a system could automatically pull the property data — assessed value, ownership history, comparable sales, neighborhood trends — and calculate a quick deal analysis: ARV, estimated repair budget, potential profit margin.</p>
+        <ul class="machine-steps">
+          <li class="red">Pull Okaloosa County property record automatically</li>
+          <li class="red">Run comparable sold analysis — ARV estimate</li>
+          <li class="red">Calculate rough deal metrics — buy price target, estimated margin</li>
+          <li class="red">One-page deal sheet — ready before Jared calls the seller</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 — THE TEAM -->
+  <div class="section">
+    <div class="divider"><span class="d-num">05</span><div class="d-line"></div><span class="d-tag">Who We Are</span></div>
+    <h2>A Team That Understands <em>Both Sides of the Deal</em></h2>
+
+    <div class="ryan-card">
+      <div class="ryan-card-title">About Ryan Clark — Operations Lead</div>
+      <p><strong>Ryan Clark is a former licensed REALTOR® and MIBOR member</strong> — the Metropolitan Indianapolis Board of REALTORS. At his peak from 2012 to 2016, Ryan was ranked among the <strong>top 50 real estate agents in the state of Indiana</strong>.</p>
+      <p>That background means Ryan understands the seller side of every deal Jared pursues — what motivates them, what scares them, and what messaging actually converts. When we write outreach for JNL Solutions, it's written by someone who has sat across the table from sellers in distress and knows what they need to hear.</p>
+      <p><strong>Combined with Junior's technical precision and Claude's AI intelligence</strong>, this team brings real estate knowledge, data capability, and automation power to Jared's deal sourcing — so he can focus on what he does best: making offers and closing deals.</p>
+    </div>
+
+    <div class="three-col">
+      <div class="pillar green">
+        <span class="pillar-icon">🏆</span>
+        <div class="pillar-name">Real Estate Experience</div>
+        <p class="pillar-desc">Former REALTOR® · MIBOR 2012–2016 · Top 50 Indiana agents · Understands seller psychology and deal dynamics from the inside.</p>
+        <span class="pillar-who">Ryan Clark — Operations Lead</span>
+      </div>
+      <div class="pillar gold">
+        <span class="pillar-icon">⚡</span>
+        <div class="pillar-name">Technical Build</div>
+        <p class="pillar-desc">Builds the data pipelines, scrapers, alert systems, and automation. Turns strategy into working systems that run without manual effort.</p>
+        <span class="pillar-who">Junior — Technical Lead</span>
+      </div>
+      <div class="pillar teal">
+        <span class="pillar-icon">🤖</span>
+        <div class="pillar-name">AI Intelligence</div>
+        <p class="pillar-desc">Scores leads, drafts outreach letters, analyzes deals, generates market data — all customized to JNL Solutions' voice and deal criteria.</p>
+        <span class="pillar-who">Claude — AI Engine</span>
+      </div>
+    </div>
+
+    <div class="callout green">
+      <div class="callout-eye">The Core Promise</div>
+      <h3>Jared finds the deals. We make sure he never runs out of them.</h3>
+      <p>Jared's competitive advantage is speed, trust, and his ability to solve problems other buyers won't touch. What we add is the intelligence infrastructure — so the right motivated sellers are always in his pipeline, the right message reaches them at the right time, and every deal moves from contact to close without anything slipping.</p>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <div class="disclaimer-title">Important Notice</div>
+    <p><strong>This is a conceptual strategic vision document.</strong> The 28,112 absentee owner records are real and built from Florida's 2025 public tax roll. Pre-foreclosure monitoring and other systems described are concepts requiring planning and implementation.</p>
+    <p><strong>All outreach must comply</strong> with applicable Florida laws, the Do Not Call registry, and any relevant regulations around contacting property owners in distress. Implementation planning should include a compliance review.</p>
+    <p><strong>The intent</strong> is to show Jared a clear picture of the data intelligence opportunity available to a cash buyer in Okaloosa County — and to open a conversation about what we can build together, starting immediately with what already exists.</p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <p>Deal Intelligence Vision · Jared Larimer · JNL Solutions LLC · Fort Walton Beach, Florida</p>
+    <p>Prepared by Ryan Clark · AI Engine: Claude · Technical: Junior · Conceptual</p>
+  </div>
+
+</div>
+</body>
+</html>
