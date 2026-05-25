@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#080808">
+<title>TLC Field</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+
+:root {
+  --gold: #C9A84C;
+  --gold2: #a8832a;
+  --dark: #080808;
+  --dark2: #111;
+  --dark3: #181818;
+  --dark4: #242424;
+  --dark5: #2e2e2e;
+  --text: #F2EDE4;
+  --text-dim: #999;
+  --text-muted: #555;
+  --green: #4CAF7D;
+  --green2: #2d8a57;
+  --red: #e05555;
+  --blue: #5B9BD5;
+  --radius: 16px;
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  overflow: hidden;
+  user-select: none;
+}
+
+/* ── SCREENS ── */
+.screen {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s ease;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── LOGIN SCREEN ── */
+#screen-login {
+  justify-content: center;
+  align-items: center;
+  padding: 40px 32px;
+  background: var(--dark);
+}
+.login-bg {
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(201,168,76,.1) 0%, transparent 60%),
+    radial-gradient(ellipse 40% 40% at 80% 80%, rgba(76,175,125,.04) 0%, transparent 50%);
+  pointer-events: none;
+}
+.login-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 56px;
+  letter-spacing: .08em;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 6px;
+  position: relative;
+}
+.login-sub {
+  font-size: 12px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 48px;
+  position: relative;
+}
+.login-form {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  position: relative;
+}
+.input-group { display: flex; flex-direction: column; gap: 6px; }
+.input-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); }
+.input-field {
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 16px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  transition: border-color .2s;
+  -webkit-appearance: none;
+}
+.input-field:focus { border-color: var(--gold); }
+.input-field::placeholder { color: var(--text-muted); }
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: .08em;
+  color: var(--dark);
+  cursor: pointer;
+  margin-top: 8px;
+  box-shadow: 0 8px 32px rgba(201,168,76,.2);
+  transition: transform .15s, box-shadow .15s;
+  active: transform: scale(.97);
+}
+.btn-primary:active { transform: scale(.97); }
+
+.login-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+.login-hint strong { color: var(--gold); }
+
+/* ── HOME SCREEN ── */
+#screen-home {
+  background: var(--dark);
+  padding-bottom: calc(80px + var(--safe-bottom));
+}
+.home-header {
+  padding: 52px 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.home-logo {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: .08em;
+  color: var(--gold);
+}
+.home-avatar {
+  width: 38px; height: 38px;
+  background: var(--dark4);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px;
+  border: 1.5px solid var(--dark5);
+  cursor: pointer;
+}
+.home-greeting {
+  padding: 0 24px;
+  margin-bottom: 6px;
+  font-size: 13px;
+  color: var(--text-muted);
+}
+.home-name {
+  padding: 0 24px;
+  font-size: 26px;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+
+/* location bar */
+.location-bar {
+  margin: 0 24px 20px;
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.loc-indicator {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  transition: background .3s, box-shadow .3s;
+}
+.loc-indicator.searching {
+  background: var(--gold);
+  box-shadow: 0 0 8px var(--gold);
+  animation: blink 1s infinite;
+}
+.loc-indicator.found {
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+  animation: pulse-dot 2s infinite;
+}
+.loc-indicator.error {
+  background: var(--red);
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+@keyframes pulse-dot { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.6;transform:scale(1.3)} }
+
+.loc-text { flex: 1; }
+.loc-status { font-size: 11px; font-weight: 600; color: var(--text-dim); }
+.loc-coords { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); margin-top: 2px; }
+
+/* clock in button */
+.clock-btn-wrap { padding: 0 24px 20px; }
+.clock-btn {
+  width: 100%;
+  border: none;
+  border-radius: var(--radius);
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  cursor: pointer;
+  transition: transform .15s, box-shadow .15s;
+  position: relative;
+  overflow: hidden;
+}
+.clock-btn:active { transform: scale(.98); }
+.clock-btn.in {
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  box-shadow: 0 8px 32px rgba(201,168,76,.25);
+}
+.clock-btn.out {
+  background: var(--dark3);
+  border: 1.5px solid var(--red);
+  box-shadow: 0 8px 32px rgba(224,85,85,.1);
+}
+.clock-btn-icon { font-size: 22px; }
+.clock-btn-text {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: .06em;
+}
+.clock-btn.in .clock-btn-text { color: var(--dark); }
+.clock-btn.out .clock-btn-text { color: var(--red); }
+
+/* active session bar */
+.session-bar {
+  margin: 0 24px 20px;
+  background: linear-gradient(135deg, #0f2a1a, #0a1f14);
+  border: 1.5px solid rgba(76,175,125,.25);
+  border-radius: 14px;
+  padding: 14px 16px;
+  display: none;
+}
+.session-bar.visible { display: flex; align-items: center; gap: 12px; }
+.session-badge {
+  display: flex; align-items: center; gap: 6px;
+  font-size: 10px; font-weight: 600; letter-spacing: .08em;
+  text-transform: uppercase; color: var(--green);
+}
+.session-badge::before {
+  content: '';
+  width: 7px; height: 7px;
+  background: var(--green);
+  border-radius: 50%;
+  box-shadow: 0 0 6px var(--green);
+  animation: pulse-dot 2s infinite;
+}
+.session-timer {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: .04em;
+  color: var(--text);
+  margin-left: auto;
+}
+
+/* quick actions */
+.section-label {
+  padding: 0 24px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 12px;
+}
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+.quick-tile {
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: var(--radius);
+  padding: 18px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  position: relative;
+  overflow: hidden;
+}
+.quick-tile:active { background: var(--dark4); }
+.quick-tile .tile-icon { font-size: 24px; }
+.quick-tile .tile-label { font-size: 13px; font-weight: 600; }
+.quick-tile .tile-sub { font-size: 11px; color: var(--text-muted); }
+
+/* tree counter */
+.tree-section {
+  margin: 0 24px 24px;
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+.tree-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 14px;
+}
+.tree-title { font-size: 13px; font-weight: 600; }
+.tree-today { font-size: 11px; color: var(--text-muted); }
+.tree-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+}
+.tree-btn {
+  width: 44px; height: 44px;
+  background: var(--dark4);
+  border: 1.5px solid var(--dark5);
+  border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 300;
+  color: var(--gold);
+  cursor: pointer;
+  transition: background .15s;
+}
+.tree-btn:active { background: var(--dark5); }
+.tree-count {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 52px;
+  letter-spacing: .02em;
+  color: var(--text);
+  min-width: 80px;
+  text-align: center;
+  line-height: 1;
+}
+.tree-label {
+  font-size: 10px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 4px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+/* stats row */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(3,1fr);
+  gap: 10px;
+  padding: 0 24px 24px;
+}
+.stat-tile {
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: 12px;
+  padding: 14px 12px;
+  text-align: center;
+}
+.stat-val {
+  font-family: 'DM Mono', monospace;
+  font-size: 20px;
+  color: var(--gold);
+  line-height: 1;
+}
+.stat-key {
+  font-size: 9px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  margin-top: 4px;
+}
+
+/* ── LOG SCREEN ── */
+#screen-log {
+  background: var(--dark);
+  padding-bottom: calc(80px + var(--safe-bottom));
+}
+.log-header {
+  padding: 52px 24px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.log-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 28px;
+  letter-spacing: .06em;
+  color: var(--text);
+}
+.log-date { font-size: 12px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+.log-empty {
+  padding: 60px 24px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.log-empty .empty-icon { font-size: 40px; margin-bottom: 16px; }
+.log-list { padding: 0 24px; display: flex; flex-direction: column; gap: 10px; }
+.log-entry {
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.log-dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  margin-top: 5px;
+  flex-shrink: 0;
+}
+.log-entry-content { flex: 1; }
+.log-entry-title { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+.log-entry-detail { font-size: 11px; color: var(--text-muted); line-height: 1.5; }
+.log-entry-time { font-family: 'DM Mono', monospace; font-size: 10px; color: var(--text-muted); margin-top: 4px; }
+
+/* photo entries */
+.log-photo-entry {
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.log-photo-img { width: 100%; height: 160px; object-fit: cover; display: block; }
+.log-photo-meta { padding: 10px 14px; }
+.log-photo-title { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+.log-photo-detail { font-size: 10px; color: var(--text-muted); font-family: 'DM Mono', monospace; }
+
+/* ── PHOTO SCREEN ── */
+#screen-photo {
+  background: var(--dark);
+  padding-bottom: calc(80px + var(--safe-bottom));
+}
+.photo-header {
+  padding: 52px 24px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.back-btn {
+  width: 36px; height: 36px;
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  cursor: pointer;
+}
+.photo-title {
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 26px;
+  letter-spacing: .06em;
+}
+.photo-upload-zone {
+  margin: 0 24px 20px;
+  background: var(--dark3);
+  border: 2px dashed var(--dark5);
+  border-radius: var(--radius);
+  padding: 40px 24px;
+  text-align: center;
+  cursor: pointer;
+  transition: border-color .2s;
+  position: relative;
+}
+.photo-upload-zone:active { border-color: var(--gold); }
+.upload-icon { font-size: 36px; margin-bottom: 12px; }
+.upload-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.upload-sub { font-size: 12px; color: var(--text-muted); }
+#photo-input { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+
+.note-section { padding: 0 24px 20px; }
+.note-label { font-size: 10px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 8px; }
+.note-input {
+  width: 100%;
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: 12px;
+  padding: 14px 16px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  outline: none;
+  resize: none;
+  height: 80px;
+  transition: border-color .2s;
+}
+.note-input:focus { border-color: var(--gold); }
+
+.photo-submit-btn {
+  margin: 0 24px;
+  width: calc(100% - 48px);
+  background: linear-gradient(135deg, var(--gold), var(--gold2));
+  border: none;
+  border-radius: 14px;
+  padding: 16px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 22px;
+  letter-spacing: .06em;
+  color: var(--dark);
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(201,168,76,.2);
+}
+.photo-submit-btn:active { transform: scale(.98); }
+
+.photo-preview {
+  margin: 0 24px 20px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: none;
+  position: relative;
+}
+.photo-preview img { width: 100%; display: block; max-height: 220px; object-fit: cover; }
+.photo-preview-remove {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 28px; height: 28px;
+  background: rgba(0,0,0,.6);
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+/* ── NAV BAR ── */
+.nav-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: calc(64px + var(--safe-bottom));
+  background: rgba(10,10,10,.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-top: 1px solid var(--dark4);
+  display: flex;
+  align-items: flex-start;
+  padding-top: 8px;
+  z-index: 100;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  padding: 4px 0;
+  transition: opacity .2s;
+}
+.nav-item:active { opacity: .7; }
+.nav-icon { font-size: 22px; }
+.nav-label { font-size: 9px; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--text-muted); }
+.nav-item.active .nav-label { color: var(--gold); }
+.nav-item.active .nav-icon { filter: drop-shadow(0 0 4px var(--gold)); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  top: 20px; left: 50%;
+  transform: translateX(-50%) translateY(-80px);
+  background: var(--dark3);
+  border: 1.5px solid var(--dark5);
+  border-radius: 12px;
+  padding: 12px 20px;
+  font-size: 13px;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 999;
+  transition: transform .3s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 8px 32px rgba(0,0,0,.5);
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+.toast.success { border-color: var(--green); color: var(--green); }
+.toast.error { border-color: var(--red); color: var(--red); }
+.toast.info { border-color: var(--gold); color: var(--gold); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.7);
+  backdrop-filter: blur(4px);
+  z-index: 200;
+  display: flex;
+  align-items: flex-end;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .3s;
+}
+.modal-overlay.show { opacity: 1; pointer-events: all; }
+.modal-sheet {
+  background: var(--dark2);
+  border-radius: 24px 24px 0 0;
+  border-top: 1.5px solid var(--dark5);
+  padding: 24px 24px calc(32px + var(--safe-bottom));
+  width: 100%;
+  transform: translateY(100%);
+  transition: transform .35s cubic-bezier(.34,1.2,.64,1);
+}
+.modal-overlay.show .modal-sheet { transform: translateY(0); }
+.modal-handle { width: 36px; height: 4px; background: var(--dark5); border-radius: 2px; margin: 0 auto 20px; }
+.modal-title { font-family: 'Bebas Neue', sans-serif; font-size: 26px; letter-spacing: .06em; margin-bottom: 16px; }
+.modal-body { font-size: 13px; color: var(--text-dim); line-height: 1.7; margin-bottom: 24px; }
+.modal-coords {
+  background: var(--dark3);
+  border: 1px solid var(--dark5);
+  border-radius: 10px;
+  padding: 12px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 12px;
+  color: var(--green);
+  margin-bottom: 24px;
+}
+.modal-btn-row { display: flex; gap: 10px; }
+.modal-btn {
+  flex: 1;
+  padding: 14px;
+  border-radius: 12px;
+  border: none;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 18px;
+  letter-spacing: .06em;
+  cursor: pointer;
+}
+.modal-btn.confirm { background: linear-gradient(135deg, var(--gold), var(--gold2)); color: var(--dark); }
+.modal-btn.cancel { background: var(--dark4); color: var(--text-dim); border: 1.5px solid var(--dark5); }
+.modal-btn.danger { background: var(--dark4); color: var(--red); border: 1.5px solid rgba(224,85,85,.3); }
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- CLOCK IN MODAL -->
+<div class="modal-overlay" id="modal-clockin">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Confirm Clock In</div>
+    <div class="modal-body">Your location is being recorded. This confirms you are on site at the time shown below.</div>
+    <div class="modal-coords" id="modal-coords-in">Acquiring GPS...</div>
+    <div class="modal-btn-row">
+      <button class="modal-btn cancel" onclick="closeModal('modal-clockin')">Cancel</button>
+      <button class="modal-btn confirm" onclick="confirmClockIn()">Clock In ⏱</button>
+    </div>
+  </div>
+</div>
+
+<!-- CLOCK OUT MODAL -->
+<div class="modal-overlay" id="modal-clockout">
+  <div class="modal-sheet">
+    <div class="modal-handle"></div>
+    <div class="modal-title">Clock Out?</div>
+    <div class="modal-body" id="clockout-summary">Ready to end your shift?</div>
+    <div class="modal-coords" id="modal-coords-out">Acquiring GPS...</div>
+    <div class="modal-btn-row">
+      <button class="modal-btn cancel" onclick="closeModal('modal-clockout')">Cancel</button>
+      <button class="modal-btn danger" onclick="confirmClockOut()">Clock Out ⏹</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ LOGIN SCREEN ══════ -->
+<div class="screen active" id="screen-login">
+  <div class="login-bg"></div>
+  <div class="login-logo">TLC Field</div>
+  <div class="login-sub">The Lighting Company · Field App</div>
+  <div class="login-form">
+    <div class="input-group">
+      <div class="input-label">Your Name</div>
+      <input class="input-field" id="login-name" type="text" placeholder="e.g. Marcus T." autocomplete="name">
+    </div>
+    <div class="input-group">
+      <div class="input-label">Employee PIN</div>
+      <input class="input-field" id="login-pin" type="number" placeholder="4-digit PIN" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">Sign In</button>
+    <div class="login-hint">Demo mode: enter any name and PIN <strong>1234</strong></div>
+  </div>
+</div>
+
+<!-- ══════ HOME SCREEN ══════ -->
+<div class="screen" id="screen-home">
+  <div class="home-header">
+    <div>
+      <div class="home-logo">TLC Field</div>
+    </div>
+    <div class="home-avatar" onclick="doLogout()">👤</div>
+  </div>
+  <div class="home-greeting">Good morning,</div>
+  <div class="home-name" id="home-name">Crew Member</div>
+
+  <!-- Location -->
+  <div class="location-bar">
+    <div class="loc-indicator searching" id="loc-indicator"></div>
+    <div class="loc-text">
+      <div class="loc-status" id="loc-status">Locating you...</div>
+      <div class="loc-coords" id="loc-coords">Waiting for GPS</div>
+    </div>
+  </div>
+
+  <!-- Active session -->
+  <div class="session-bar" id="session-bar">
+    <div class="session-badge">On the Clock</div>
+    <div class="session-timer" id="session-timer">0:00:00</div>
+  </div>
+
+  <!-- Clock Button -->
+  <div class="clock-btn-wrap">
+    <button class="clock-btn in" id="clock-btn" onclick="handleClockBtn()">
+      <span class="clock-btn-icon">⏱</span>
+      <span class="clock-btn-text">Clock In</span>
+    </button>
+  </div>
+
+  <!-- Trees today -->
+  <div class="section-label">Trees Wrapped Today</div>
+  <div class="tree-section">
+    <div class="tree-header">
+      <div class="tree-title">🌲 Count</div>
+      <div class="tree-today" id="tree-today-label">Tap + to add</div>
+    </div>
+    <div class="tree-controls">
+      <div class="tree-btn" onclick="adjustTrees(-1)">−</div>
+      <div>
+        <div class="tree-count" id="tree-count">0</div>
+        <div class="tree-label">Trees Today</div>
+      </div>
+      <div class="tree-btn" onclick="adjustTrees(1)">+</div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="section-label">This Week</div>
+  <div class="stats-row">
+    <div class="stat-tile">
+      <div class="stat-val" id="stat-hours">0.0</div>
+      <div class="stat-key">Hours</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val" id="stat-trees">0</div>
+      <div class="stat-key">Trees</div>
+    </div>
+    <div class="stat-tile">
+      <div class="stat-val" id="stat-days">0</div>
+      <div class="stat-key">Days</div>
+    </div>
+  </div>
+
+  <!-- Quick actions -->
+  <div class="section-label">Quick Actions</div>
+  <div class="quick-grid">
+    <div class="quick-tile" onclick="goTo('screen-photo')">
+      <span class="tile-icon">📸</span>
+      <span class="tile-label">Add Photo</span>
+      <span class="tile-sub">Job site photos</span>
+    </div>
+    <div class="quick-tile" onclick="goTo('screen-log')">
+      <span class="tile-icon">📋</span>
+      <span class="tile-label">Today's Log</span>
+      <span class="tile-sub">View all entries</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════ LOG SCREEN ══════ -->
+<div class="screen" id="screen-log">
+  <div class="log-header">
+    <div class="log-title">Today's Log</div>
+    <div class="log-date" id="log-date"></div>
+  </div>
+  <div id="log-content">
+    <div class="log-empty">
+      <div class="empty-icon">📋</div>
+      Nothing logged yet today.<br>Clock in to get started.
+    </div>
+  </div>
+</div>
+
+<!-- ══════ PHOTO SCREEN ══════ -->
+<div class="screen" id="screen-photo">
+  <div class="photo-header">
+    <div class="back-btn" onclick="goTo('screen-home')">←</div>
+    <div class="photo-title">Add Photo</div>
+  </div>
+
+  <div class="photo-upload-zone" id="photo-zone">
+    <input type="file" id="photo-input" accept="image/*" capture="environment" onchange="handlePhotoSelect(event)">
+    <div class="upload-icon">📷</div>
+    <div class="upload-title">Take or Upload Photo</div>
+    <div class="upload-sub">Job site · Progress · Before & After</div>
+  </div>
+
+  <div class="photo-preview" id="photo-preview">
+    <img id="photo-preview-img" src="" alt="Preview">
+    <div class="photo-preview-remove" onclick="removePhoto()">✕</div>
+  </div>
+
+  <div class="note-section">
+    <div class="note-label">Note (optional)</div>
+    <textarea class="note-input" id="photo-note" placeholder="e.g. North side of fountain done, 8 oaks wrapped..."></textarea>
+  </div>
+
+  <button class="photo-submit-btn" onclick="submitPhoto()">Submit Photo ✓</button>
+</div>
+
+<!-- ══════ NAV BAR ══════ -->
+<div class="nav-bar" id="nav-bar" style="display:none;">
+  <div class="nav-item active" id="nav-home" onclick="navTo('screen-home','nav-home')">
+    <span class="nav-icon">🏠</span>
+    <span class="nav-label">Home</span>
+  </div>
+  <div class="nav-item" id="nav-log" onclick="navTo('screen-log','nav-log')">
+    <span class="nav-icon">📋</span>
+    <span class="nav-label">Log</span>
+  </div>
+</div>
+
+<script>
+// ── STATE ──
+let state = {
+  user: null,
+  clockedIn: false,
+  clockInTime: null,
+  clockInCoords: null,
+  treesToday: 0,
+  weekHours: 0,
+  weekTrees: 0,
+  weekDays: 0,
+  todayLog: [],
+  timerInterval: null,
+  currentCoords: null,
+  selectedPhoto: null,
+};
+
+// ── INIT ──
+window.addEventListener('load', () => {
+  const saved = localStorage.getItem('tlc_state');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      // restore only if same day
+      const today = new Date().toDateString();
+      if (s.date === today) {
+        state.user = s.user;
+        state.clockedIn = s.clockedIn;
+        state.clockInTime = s.clockInTime;
+        state.clockInCoords = s.clockInCoords;
+        state.treesToday = s.treesToday || 0;
+        state.weekHours = s.weekHours || 0;
+        state.weekTrees = s.weekTrees || 0;
+        state.weekDays = s.weekDays || 0;
+        state.todayLog = s.todayLog || [];
+        if (state.user) { showApp(); }
+      }
+    } catch(e) {}
+  }
+  startGPS();
+  updateLogDate();
+});
+
+function saveState() {
+  const today = new Date().toDateString();
+  localStorage.setItem('tlc_state', JSON.stringify({...state, date: today}));
+}
+
+// ── GPS ──
+function startGPS() {
+  if (!navigator.geolocation) {
+    document.getElementById('loc-status').textContent = 'GPS not available';
+    document.getElementById('loc-indicator').className = 'loc-indicator error';
+    return;
+  }
+  navigator.geolocation.watchPosition(
+    (pos) => {
+      state.currentCoords = { lat: pos.coords.latitude, lng: pos.coords.longitude, accuracy: pos.coords.accuracy };
+      document.getElementById('loc-status').textContent = 'Location Verified ✓';
+      document.getElementById('loc-coords').textContent =
+        `${pos.coords.latitude.toFixed(4)}° N, ${Math.abs(pos.coords.longitude).toFixed(4)}° W · ±${Math.round(pos.coords.accuracy)}m`;
+      document.getElementById('loc-indicator').className = 'loc-indicator found';
+    },
+    (err) => {
+      document.getElementById('loc-status').textContent = 'Location unavailable';
+      document.getElementById('loc-coords').textContent = 'Enable location access in Settings';
+      document.getElementById('loc-indicator').className = 'loc-indicator error';
+    },
+    { enableHighAccuracy: true, maximumAge: 10000 }
+  );
+}
+
+// ── LOGIN ──
+function doLogin() {
+  const name = document.getElementById('login-name').value.trim();
+  const pin  = document.getElementById('login-pin').value.trim();
+  if (!name) { showToast('Enter your name', 'error'); return; }
+  if (pin !== '1234') { showToast('Invalid PIN', 'error'); return; }
+  state.user = name;
+  saveState();
+  showApp();
+}
+
+function showApp() {
+  document.getElementById('home-name').textContent = state.user;
+  document.getElementById('nav-bar').style.display = 'flex';
+  goTo('screen-home');
+  if (state.clockedIn) {
+    updateClockUI(true);
+    startTimer();
+  }
+  updateTreeUI();
+  updateStatsUI();
+}
+
+function doLogout() {
+  if (state.clockedIn) { showToast('Clock out before signing out', 'error'); return; }
+  state.user = null;
+  localStorage.removeItem('tlc_state');
+  document.getElementById('nav-bar').style.display = 'none';
+  goTo('screen-login');
+}
+
+// ── NAVIGATION ──
+function goTo(screenId) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(screenId).classList.add('active');
+}
+
+function navTo(screenId, navId) {
+  goTo(screenId);
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById(navId).classList.add('active');
+  if (screenId === 'screen-log') renderLog();
+}
+
+// ── CLOCK IN/OUT ──
+function handleClockBtn() {
+  if (!state.currentCoords && !state.clockedIn) {
+    showToast('Waiting for GPS — try again in a moment', 'error');
+  }
+  const coords = state.currentCoords || { lat: 30.4213, lng: -86.6187, accuracy: 5 };
+
+  if (!state.clockedIn) {
+    // Show clock in confirmation
+    document.getElementById('modal-coords-in').innerHTML =
+      `📍 ${coords.lat.toFixed(5)}° N, ${Math.abs(coords.lng).toFixed(5)}° W<br>` +
+      `🕐 ${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}<br>` +
+      `✓ Accuracy ±${Math.round(coords.accuracy || 5)}m`;
+    openModal('modal-clockin');
+  } else {
+    // Show clock out confirmation
+    const elapsed = getElapsedTime();
+    document.getElementById('clockout-summary').textContent =
+      `You've been clocked in for ${elapsed}. ${state.treesToday} trees logged today.`;
+    const coords2 = state.currentCoords || { lat: 30.4213, lng: -86.6187, accuracy: 5 };
+    document.getElementById('modal-coords-out').innerHTML =
+      `📍 ${coords2.lat.toFixed(5)}° N, ${Math.abs(coords2.lng).toFixed(5)}° W<br>` +
+      `🕐 ${new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'})}`;
+    openModal('modal-clockout');
+  }
+}
+
+function confirmClockIn() {
+  const coords = state.currentCoords || { lat: 30.4213, lng: -86.6187, accuracy: 5 };
+  state.clockedIn = true;
+  state.clockInTime = Date.now();
+  state.clockInCoords = coords;
+  closeModal('modal-clockin');
+  updateClockUI(true);
+  startTimer();
+  addLogEntry({
+    type: 'clockin',
+    title: 'Clocked In',
+    detail: `${coords.lat.toFixed(4)}° N, ${Math.abs(coords.lng).toFixed(4)}° W · GPS Verified`,
+    time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    color: '#4CAF7D',
+  });
+  saveState();
+  showToast('✓ Clocked in — location recorded', 'success');
+}
+
+function confirmClockOut() {
+  const ms = Date.now() - state.clockInTime;
+  const hrs = ms / 3600000;
+  state.weekHours = +(state.weekHours + hrs).toFixed(2);
+  state.weekTrees += state.treesToday;
+  state.weekDays += 1;
+  const timeStr = getElapsedTime();
+  addLogEntry({
+    type: 'clockout',
+    title: 'Clocked Out',
+    detail: `Shift: ${timeStr} · ${state.treesToday} trees wrapped`,
+    time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    color: '#e05555',
+  });
+  state.clockedIn = false;
+  state.clockInTime = null;
+  state.clockInCoords = null;
+  clearInterval(state.timerInterval);
+  closeModal('modal-clockout');
+  updateClockUI(false);
+  updateStatsUI();
+  saveState();
+  showToast('Clocked out · Good work today', 'info');
+}
+
+function updateClockUI(active) {
+  const btn = document.getElementById('clock-btn');
+  const bar = document.getElementById('session-bar');
+  if (active) {
+    btn.className = 'clock-btn out';
+    btn.innerHTML = '<span class="clock-btn-icon">⏹</span><span class="clock-btn-text">Clock Out</span>';
+    bar.classList.add('visible');
+  } else {
+    btn.className = 'clock-btn in';
+    btn.innerHTML = '<span class="clock-btn-icon">⏱</span><span class="clock-btn-text">Clock In</span>';
+    bar.classList.remove('visible');
+  }
+}
+
+function startTimer() {
+  clearInterval(state.timerInterval);
+  state.timerInterval = setInterval(() => {
+    document.getElementById('session-timer').textContent = getElapsedTime();
+  }, 1000);
+}
+
+function getElapsedTime() {
+  if (!state.clockInTime) return '0:00:00';
+  const ms = Date.now() - state.clockInTime;
+  const h = Math.floor(ms/3600000);
+  const m = Math.floor((ms%3600000)/60000);
+  const s = Math.floor((ms%60000)/1000);
+  return `${h}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+// ── TREES ──
+function adjustTrees(delta) {
+  state.treesToday = Math.max(0, state.treesToday + delta);
+  updateTreeUI();
+  saveState();
+  if (delta > 0 && state.treesToday % 5 === 0 && state.treesToday > 0) {
+    showToast(`🌲 ${state.treesToday} trees today!`, 'info');
+  }
+}
+
+function updateTreeUI() {
+  document.getElementById('tree-count').textContent = state.treesToday;
+  document.getElementById('stat-trees').textContent = state.weekTrees + state.treesToday;
+  document.getElementById('tree-today-label').textContent =
+    state.treesToday > 0 ? `${state.treesToday} wrapped today` : 'Tap + to add';
+}
+
+function updateStatsUI() {
+  document.getElementById('stat-hours').textContent = state.weekHours.toFixed(1);
+  document.getElementById('stat-trees').textContent = state.weekTrees + state.treesToday;
+  document.getElementById('stat-days').textContent = state.weekDays;
+}
+
+// ── PHOTO ──
+let selectedPhotoData = null;
+
+function handlePhotoSelect(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (ev) => {
+    selectedPhotoData = ev.target.result;
+    document.getElementById('photo-preview-img').src = selectedPhotoData;
+    document.getElementById('photo-preview').style.display = 'block';
+    document.getElementById('photo-zone').style.display = 'none';
+  };
+  reader.readAsDataURL(file);
+}
+
+function removePhoto() {
+  selectedPhotoData = null;
+  document.getElementById('photo-preview').style.display = 'none';
+  document.getElementById('photo-zone').style.display = 'block';
+  document.getElementById('photo-input').value = '';
+}
+
+function submitPhoto() {
+  if (!selectedPhotoData) { showToast('Select a photo first', 'error'); return; }
+  const note = document.getElementById('photo-note').value.trim();
+  const coords = state.currentCoords || { lat: 30.4213, lng: -86.6187 };
+  addLogEntry({
+    type: 'photo',
+    title: 'Photo Submitted',
+    detail: note || 'No note added',
+    time: new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}),
+    color: '#5B9BD5',
+    photo: selectedPhotoData,
+    coords: `${coords.lat.toFixed(4)}° N, ${Math.abs(coords.lng).toFixed(4)}° W`,
+  });
+  saveState();
+  showToast('✓ Photo logged', 'success');
+  removePhoto();
+  document.getElementById('photo-note').value = '';
+  goTo('screen-home');
+}
+
+// ── LOG ──
+function addLogEntry(entry) {
+  state.todayLog.push(entry);
+  saveState();
+}
+
+function renderLog() {
+  const container = document.getElementById('log-content');
+  if (state.todayLog.length === 0) {
+    container.innerHTML = `<div class="log-empty"><div class="empty-icon">📋</div>Nothing logged yet today.<br>Clock in to get started.</div>`;
+    return;
+  }
+  const reversed = [...state.todayLog].reverse();
+  container.innerHTML = '<div class="log-list">' +
+    reversed.map(entry => {
+      if (entry.type === 'photo') {
+        return `<div class="log-photo-entry">
+          <img class="log-photo-img" src="${entry.photo}" alt="Job photo">
+          <div class="log-photo-meta">
+            <div class="log-photo-title">📸 ${entry.title} · ${entry.time}</div>
+            <div class="log-photo-detail">${entry.coords || ''} · ${entry.detail}</div>
+          </div>
+        </div>`;
+      }
+      return `<div class="log-entry">
+        <div class="log-dot" style="background:${entry.color};box-shadow:0 0 6px ${entry.color};"></div>
+        <div class="log-entry-content">
+          <div class="log-entry-title">${entry.title}</div>
+          <div class="log-entry-detail">${entry.detail}</div>
+          <div class="log-entry-time">${entry.time}</div>
+        </div>
+      </div>`;
+    }).join('') +
+  '</div>';
+}
+
+function updateLogDate() {
+  document.getElementById('log-date').textContent =
+    new Date().toLocaleDateString([], {weekday:'short', month:'short', day:'numeric'});
+}
+
+// ── MODAL ──
+function openModal(id) { document.getElementById(id).classList.add('show'); }
+function closeModal(id) { document.getElementById(id).classList.remove('show'); }
+
+// ── TOAST ──
+let toastTimer;
+function showToast(msg, type='info') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+// close modals on overlay tap
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('show');
+  });
+});
+
+// greeting by time
+window.addEventListener('load', () => {
+  const h = new Date().getHours();
+  const greeting = h < 12 ? 'Good morning,' : h < 17 ? 'Good afternoon,' : 'Good evening,';
+  document.querySelector('.home-greeting').textContent = greeting;
+});
+</script>
+</body>
+</html>
